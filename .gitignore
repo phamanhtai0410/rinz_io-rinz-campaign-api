@@ -7,3 +7,5 @@ test
 venv
 supervisord.pid
 *.model
+.gitmodules
+lib
