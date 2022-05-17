@@ -1,0 +1,205 @@
+# -*- coding: utf-8 -*-
+
+""""
+    Copyright (C) 2022 ESOL LABS - All Rights Reserved.
+
+    You may use, distribute and modify this code under the
+    terms of the XYZ license, which unfortunately won't be
+    written for another century.
+
+    You should have received a copy of the XYZ license with
+    this file. If not, please write to: , or visit :
+"""
+
+# File: __init__.py
+# Created at May 17th, 2022
+# Author: taipa
+
+"""
+   Description:
+        -
+        -
+"""
+
+from email.policy import default
+from attr import fields_dict
+from marshmallow import EXCLUDE, INCLUDE, fields, Schema
+from lib.schema.req import ResDatetimeField, ObjectIdField
+from src.enums.campaign import CampaignGetList
+
+
+"""
+    Campaign Creation
+"""
+
+class FormNftOfCampaign(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+    
+    image_uri = fields.Str(required=True)
+    supply = fields.Int(required=True)
+    price = fields.Float(required=True)
+    type = fields.Str(required=True)
+    percent = fields.Float(allow_none=True)
+    description = fields.Str(allow_none=True)
+
+
+class FormCreateNewCampaign(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+    
+    
+    name = fields.Str(required=True)
+    description = fields.Str(allow_none=True)
+    image_url = fields.Str(required=True)
+    hightlight_text = fields.Str(allow_none=True)
+    max_allocation = fields.Int(allow_none=True)
+    allocation_symbol = fields.Str(required=True)
+    chain_name = fields.Str(required=True, default='BSC')
+    chain_currency = fields.Str(required=True)
+    total_supply = fields.Int(required=True) 
+    total_raise = fields.Int(required=True)
+    start_time = fields.DateTime(required=True)
+    end_time = fields.DateTime(required=True)
+    website_domain = fields.Str(required=True)
+    social_link = fields.Dict(allow_none=True)
+    campaign_method = fields.Int(required=True)
+    random_nft = fields.Bool(required=True)
+    nft_list = fields.List(fields.Nested(FormNftOfCampaign()))
+
+
+
+
+class CreateNewCampaignResp(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        ordered = True
+
+    name = fields.Str(required=True)
+    is_released = fields.Bool(required=True)
+
+
+"""
+    Campaign Editor
+"""
+
+class FormNonReleasedCampaignEditor(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+    
+    _id = fields.Str(required=True)
+    name = fields.Str(allow_none=True)
+    hightlight_text = fields.Str(allow_none=True)
+    description = fields.Str(allow_none=True)
+    image_url = fields.Str(allow_none=True)
+    website_domain = fields.Str(allow_none=True)
+    social_link = fields.Str(allow_none=True)
+
+
+
+class FormReleasedCampaignEditor(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+    
+    _id = fields.Str(required=True)
+    name = fields.Str(allow_none=True)
+    hightlight_text = fields.Str(allow_none=True)
+    description = fields.Str(allow_none=True)
+    image_url = fields.Str(allow_none=True)
+    website_domain = fields.Str(allow_none=True)
+    social_link = fields.Str(allow_none=True)
+    
+
+
+class CampaignEditorResp(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        ordered = True
+    
+    _id = fields.Str(required=True)
+    edit_result = fields.Str(required=True)
+
+
+"""
+    Campaign Get List
+"""
+
+class GetListCampaignParams(Schema):
+
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+
+    page = fields.Int(allow_none=True, default=CampaignGetList.DEFAULT_PAGE)
+    page_size = fields.Int(allow_none=True, default=CampaignGetList.DEFAULT_PAGE_SIZE)
+
+
+
+class SingleCampaign(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        ordered = True
+    
+    
+    _id = ObjectIdField(required=True)
+    name = fields.Str(required=True)
+    image_url = fields.Str(required=True)
+    hightlight_text = fields.Str(allow_none=True)
+    max_allocation = fields.Int(allow_none=True)
+    allocation_symbol = fields.Str(required=True)
+    chain_name = fields.Str(required=True, default='BSC')
+    chain_currency = fields.Str(required=True)
+    total_supply = fields.Int(required=True) 
+    total_raise = fields.Int(required=True)
+    start_time = ResDatetimeField(required=True)
+    end_time = ResDatetimeField(required=True)
+    website_domain = fields.Str(required=True)
+    social_link = fields.Dict(allow_none=True)
+    campaign_method = fields.Int(required=True)
+    random_nft = fields.Bool(required=True)
+    nft_list = fields.List(fields.Nested(FormNftOfCampaign()))
+
+    user = fields.Str(required=True)
+    contract = fields.Str(required=True)
+    is_released = fields.Bool(required=True)
+
+    description = fields.Str(missing='')
+
+
+
+class GetListCampaignsResp(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        ordered = True
+    
+    total = fields.Int(required=True)
+    page = fields.Int(required=True)
+    campaigns = fields.List(fields.Nested(SingleCampaign()))
+
+
+
+"""
+    Campaign Release
+"""
+class ReleaseCampaignParams(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+
+    campaign_id = fields.Str(required=True)
+
+class ReleaseCampaignResp(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        ordered = True
+    
+    _id = fields.Str(required=True)
+    is_released = fields.Bool(required=True)
+
+
+
+

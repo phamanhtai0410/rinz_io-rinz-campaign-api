@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  rz-campaign-api:
+    image: rinz-campaign
+    build: .
+    restart: always
+    volumes:
+      - ./:/webapps
+    ports:
+      - 9999:5005
+    command: supervisord -n -c /etc/supervisor.d/service.conf
