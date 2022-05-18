@@ -22,7 +22,7 @@
 """
 import lib
 from lib.logger import Logger
-from schemas.campaign import *
+from src.schemas.campaign import *
 from src.api import campaign
 from src.services.campaign import CampaignService
 
