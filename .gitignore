@@ -7,4 +7,3 @@ test
 venv
 supervisord.pid
 *.model
-lib
