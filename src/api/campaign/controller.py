@@ -79,7 +79,7 @@ def edit_non_released_campaign(wallet, body, *args, **kwargs):
 
 
 
-@lib.handle_res(req_schema=FormCreateNewCampaign, res_schema=CampaignEditorResp)
+@lib.handle_res(req_schema=FormReleasedCampaignEditor, res_schema=CampaignEditorResp)
 def edit_released_campaign(wallet, body, *args, **kwargs):
     _user_id = wallet.user
     _campaign_id = body._id

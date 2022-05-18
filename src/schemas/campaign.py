@@ -39,7 +39,7 @@ class FormNftOfCampaign(Schema):
     
     name = fields.Str(required=True)
     image_uri = fields.Str(required=True)
-    supply = fields.Int(required=True)
+    supply = fields.Int(allow_none=True)
     price = fields.Float(required=True)
     type = fields.Str(required=True)
     percent = fields.Float(allow_none=True)
@@ -55,11 +55,11 @@ class FormCreateNewCampaign(Schema):
     name = fields.Str(required=True)
     description = fields.Str(allow_none=True)
     about_kol = fields.Str(allow_none=True)
-    kol_image_kol = fields.Str(allow_none=True)
+    kol_image_url = fields.Str(allow_none=True)
     image_url = fields.Str(required=True)
     hightlight_text = fields.Str(allow_none=True)
     max_allocation = fields.Int(allow_none=True)
-    allocation_symbol = fields.Str(required=True)
+    allocation_symbol = fields.Str(allow_none=True)
     chain_name = fields.Str(required=True, default='BSC')
     chain_currency = fields.Str(required=True)
     total_supply = fields.Int(required=True) 
@@ -88,20 +88,31 @@ class CreateNewCampaignResp(Schema):
     Campaign Editor
 """
 
-# class FormNonReleasedCampaignEditor(Schema):
-#     class Meta:
-#         unknown = INCLUDE
-#         ordered = True
+class FormNonReleasedCampaignEditor(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
     
-#     _id = fields.Str(required=True)
-#     name = fields.Str(allow_none=True)
-#     hightlight_text = fields.Str(allow_none=True)
-#     description = fields.Str(allow_none=True)
-#     about_kol = fields.Str(allow_none=True)
-#     kol_image_url = fields.Str(allow_none=True)
-#     image_url = fields.Str(allow_none=True)
-#     website_domain = fields.Str(allow_none=True)
-#     social_link = fields.Str(allow_none=True)
+    _id = fields.Str(required=True)
+    name = fields.Str(required=True)
+    description = fields.Str(allow_none=True)
+    about_kol = fields.Str(allow_none=True)
+    kol_image_url = fields.Str(allow_none=True)
+    image_url = fields.Str(required=True)
+    hightlight_text = fields.Str(allow_none=True)
+    max_allocation = fields.Int(allow_none=True)
+    allocation_symbol = fields.Str(allow_none=True)
+    chain_name = fields.Str(required=True, default='BSC')
+    chain_currency = fields.Str(required=True)
+    total_supply = fields.Int(required=True) 
+    total_raise = fields.Int(required=True)
+    start_time = fields.DateTime(required=True)
+    end_time = fields.DateTime(required=True)
+    website_domain = fields.Str(required=True)
+    social_link = fields.Dict(allow_none=True)
+    campaign_method = fields.Int(required=True)
+    random_nft = fields.Bool(required=True)
+    nft_list = fields.List(fields.Nested(FormNftOfCampaign()))
 
 
 
@@ -170,7 +181,6 @@ class SingleCampaign(Schema):
     random_nft = fields.Bool(required=True)
     nft_list = fields.List(fields.Nested(FormNftOfCampaign()))
 
-    user = fields.Str(required=True)
     contract = fields.Str(required=True)
     is_released = fields.Bool(required=True)
 
