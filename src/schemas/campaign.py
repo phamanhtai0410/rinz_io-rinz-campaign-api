@@ -37,6 +37,7 @@ class FormNftOfCampaign(Schema):
         unknown = INCLUDE
         ordered = True
     
+    name = fields.Str(required=True)
     image_uri = fields.Str(required=True)
     supply = fields.Int(required=True)
     price = fields.Float(required=True)
@@ -53,6 +54,8 @@ class FormCreateNewCampaign(Schema):
     
     name = fields.Str(required=True)
     description = fields.Str(allow_none=True)
+    about_kol = fields.Str(allow_none=True)
+    kol_image_kol = fields.Str(allow_none=True)
     image_url = fields.Str(required=True)
     hightlight_text = fields.Str(allow_none=True)
     max_allocation = fields.Int(allow_none=True)
@@ -85,18 +88,20 @@ class CreateNewCampaignResp(Schema):
     Campaign Editor
 """
 
-class FormNonReleasedCampaignEditor(Schema):
-    class Meta:
-        unknown = INCLUDE
-        ordered = True
+# class FormNonReleasedCampaignEditor(Schema):
+#     class Meta:
+#         unknown = INCLUDE
+#         ordered = True
     
-    _id = fields.Str(required=True)
-    name = fields.Str(allow_none=True)
-    hightlight_text = fields.Str(allow_none=True)
-    description = fields.Str(allow_none=True)
-    image_url = fields.Str(allow_none=True)
-    website_domain = fields.Str(allow_none=True)
-    social_link = fields.Str(allow_none=True)
+#     _id = fields.Str(required=True)
+#     name = fields.Str(allow_none=True)
+#     hightlight_text = fields.Str(allow_none=True)
+#     description = fields.Str(allow_none=True)
+#     about_kol = fields.Str(allow_none=True)
+#     kol_image_url = fields.Str(allow_none=True)
+#     image_url = fields.Str(allow_none=True)
+#     website_domain = fields.Str(allow_none=True)
+#     social_link = fields.Str(allow_none=True)
 
 
 
@@ -109,6 +114,8 @@ class FormReleasedCampaignEditor(Schema):
     name = fields.Str(allow_none=True)
     hightlight_text = fields.Str(allow_none=True)
     description = fields.Str(allow_none=True)
+    about_kol = fields.Str(allow_none=True)
+    kol_image_url = fields.Str(allow_none=True)
     image_url = fields.Str(allow_none=True)
     website_domain = fields.Str(allow_none=True)
     social_link = fields.Str(allow_none=True)
@@ -168,6 +175,8 @@ class SingleCampaign(Schema):
     is_released = fields.Bool(required=True)
 
     description = fields.Str(missing='')
+    about_kol = fields.Str(missing='')
+    kol_image_url = fields.Str(missing='')
 
 
 

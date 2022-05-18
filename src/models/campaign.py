@@ -40,3 +40,5 @@ class CampaignModel(BaseMG):
     
     # campaign desciption
     description = fields.CharField(blank=True, default='')
+    about_kol = fields.CharField(blank=True, default='')
+    kol_image_url = fields.CharField(blank=True, default='')

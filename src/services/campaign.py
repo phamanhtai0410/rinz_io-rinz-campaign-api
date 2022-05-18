@@ -59,6 +59,9 @@ class CampaignService(object):
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permission to update this campaign !")
 
+        if _campaign['is_released']:
+            raise ExCampaign("This campaign's already released !")
+
         CampaignModel.update(
             oid=campaign_id,
             obj=edit_infos
@@ -73,7 +76,10 @@ class CampaignService(object):
         
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permission to update this campaign !")
-        
+
+        if not _campaign['is_realeased']:
+            raise ExCampaign("This campaign's not a released one !")
+
         CampaignModel.update(
             oid=campaign_id,
             obj=edit_infos
