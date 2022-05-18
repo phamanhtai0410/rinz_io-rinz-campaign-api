@@ -2,7 +2,7 @@
 *.pyc
 code/config
 test
-.env
+
 .vscode
 .git
 venv
