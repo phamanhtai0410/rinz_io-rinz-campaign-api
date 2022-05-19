@@ -35,4 +35,4 @@ rest_campaign.add_url_rule('release', methods=['GET'], view_func=release_campaig
         + Get information of campaign for page details:
 """
 
-rest_campaign.add_url_rule('get_details', methods=['GET'], view_func=get_details)
+rest_campaign.add_url_rule('get_details', methods=['GET'], view_func=get_campaign_details)
