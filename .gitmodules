@@ -1,0 +1,4 @@
+[submodule "lib"]
+	path = lib
+	url = https://gitlab.rinznetwork.com/rinz-io/rinz-lib.git
+	branch = stag
