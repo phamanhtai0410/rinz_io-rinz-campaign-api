@@ -20,6 +20,7 @@
         -
         -
 """
+from re import L
 import lib
 from lib.logger import Logger
 from src.schemas.campaign import *
@@ -121,3 +122,11 @@ def release_campaign(wallet, params, *args, **kwargs):
         "is_released": _is_released
     }
 
+
+
+@lib.handle_res(res_schema=SingleCampaign)
+def get_campaign_details(subdomain, *args, **kwargs):
+
+    # Hardcode Campaign for client get info of page Campaign Details
+    _details = CampaignService.get_campaign_details_by_subdomain(subdomain)
+    return _details
