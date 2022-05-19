@@ -32,6 +32,7 @@ from src.services.campaign import CampaignService
 def create_new_campaign(wallet, body, *args, **kwargs):
     # Load data
     _user_id = wallet.user
+    # _user_id = 'test_user_id'
     _campaign_info = {
         'user': _user_id,
         'contract': '',
@@ -124,7 +125,7 @@ def release_campaign(wallet, params, *args, **kwargs):
 
 
 
-@lib.handle_res(res_schema=SingleCampaign)
+@lib.handle_res(res_schema=SingleCampaign, login=False)
 def get_campaign_details(subdomain, *args, **kwargs):
 
     # Hardcode Campaign for client get info of page Campaign Details
