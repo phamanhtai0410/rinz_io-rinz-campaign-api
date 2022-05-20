@@ -40,17 +40,17 @@ class DefaultConfig(BaseConfig):
     CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
     CELERY_TASK_RESULT_EXPIRES = os.getenv('CELERY_TASK_RESULT_EXPIRES')
     CELERY_TASK_RESULT_EXPIRES = int(CELERY_TASK_RESULT_EXPIRES) if CELERY_TASK_RESULT_EXPIRES else 600
-    CELERY_DEFAULT_QUEUE = 'comment-queue'
+    CELERY_DEFAULT_QUEUE = 'campaign-queue'
 
     CELERY_ROUTES = {
-        'worker.save_comment': {'queue': 'comment-queue'},
-        'worker.send_to_socket_task': {'queue': 'comment-queue'}
+        'worker.deploy_smc': {'queue': 'campaign-queue'},
+        'worker.create_domain': {'queue': 'campaign-queue'}
     }
 
     CELERY_TRACK_STARTED = "True"
 
     CELERY_ENABLE_UTC = True
 
-    # Socket server
-    SOCKET_SERVER_DOMAIN = os.getenv('SOCKET_SERVER_DOMAIN')
+    # IAPI server
+    IAPI_URL = os.getenv('IAPI_URL')
 

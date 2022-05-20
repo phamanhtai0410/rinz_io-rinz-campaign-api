@@ -27,20 +27,24 @@ def log_any(x, *args, **kwargs):
     return json.dumps(msg)
 
 
-def send_message_socket(message_type, item_type, author_user, item_id, comment_payload):
-    """Call Websocket service to deliver a message"""
-    _payload = {
-        "to_room": '{}:{}'.format(item_type, item_id),
-        "from_service": "comment",
-        "type": message_type,
-        "payload": comment_payload
-    }
+"""
+    Function: Call IAPI service to check if the submitted subdomain for campaign is valid or not
+    @params: subdomain <string>
+    @params: campaign_id <string>
+    @return: True if sub_domain is valid 
+"""
+def check_campaign_subdoamin_valid(subdomain, campaign_id=None):
     try:
-        resp = requests.post('{}/iapi/hooks/send_message'.format(DefaultConfig.SOCKET_SERVER_DOMAIN),
+        _payload = {
+            "campaign_id": campaign_id,
+            "domain": subdomain
+        }
+        resp = requests.post('{}/domain/check'.format(DefaultConfig.IAPI_URL),
                              json=_payload,
                              verify=False,
                              timeout=5)
-        log_any('Call Socket service resp code', resp.status_code, resp.text)
+        log_any(f'Call IAPI service check domain {subdomain}: {resp.status_code}  {resp.text}')
+        return resp.status_code, resp.json()
     except Exception as e:
         traceback.print_exc(e)
         capture_exception(e)
