@@ -125,6 +125,6 @@ class CampaignService(object):
         return campaign_id, True
 
     @classmethod
-    def get_campaign_details_by_subdomain(subdoamin):
+    def get_campaign_details_by_subdomain(cls, subdoamin):
         # hard code for client build UI
         return CampaignModel.get_item(oid="6285fc1a8e445aaef2c2d7ec")
