@@ -35,9 +35,12 @@ def log_any(x, *args, **kwargs):
 def check_campaign_subdoamin_valid(subdomain, campaign_id=None):
     try:
         _payload = {
-            "campaign_id": campaign_id,
             "domain": subdomain
         }
+        
+        if campaign_id:
+            _payload["campaign_id"] = campaign_id
+
         resp = requests.post('{}/domain/check'.format(DefaultConfig.IAPI_URL),
                              json=_payload,
                              verify=False,
