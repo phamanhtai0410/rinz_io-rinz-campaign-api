@@ -7,6 +7,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from flask import Flask, request, jsonify
 
 from lib.decorators.http import make_response
+from lib.enums.database import DBName
 from lib.enums.http import ErrorCode
 from .config import DefaultConfig
 
@@ -45,7 +46,7 @@ def configure_app(app, config=None):
 
 
 def configure_extensions(app):
-    connect(DefaultConfig.DB_DAPP, connect=False)
+    connect(DefaultConfig.DB_DAPP, connect=False, alias=DBName.DAPP)
     # mdb_payment.init_app(app, uri=app.config['MONGO_URI_RINZ_PAYMENT'])
 
     # Sentry

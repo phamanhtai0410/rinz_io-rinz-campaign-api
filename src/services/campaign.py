@@ -25,7 +25,7 @@ from src.models.campaign import CampaignModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
-
+from src.helpers.campaign import check_campaign_subdoamin_valid
 
 
 class CampaignService(object):
@@ -34,17 +34,24 @@ class CampaignService(object):
     def create_campaign(cls, campaign_dict):
         _list_nft = campaign_dict['nft_list']
         
-        _sum_percent = sum([nft['percent'] for nft in _list_nft])
-        _sum_supply = sum([nft['supply'] for nft in _list_nft])
-        
-        if _sum_percent != 100:
-            raise ExCampaign('Invalid Nft List: total percent not valid !')
-        
-        if _sum_supply != campaign_dict['total_supply']:
-            raise ExCampaign('Invalid Nft List: total suplly not valid !')
+        if campaign_dict["random_nft"]:
+            _sum_percent = sum([nft['percent'] for nft in _list_nft])
+            if _sum_percent != 100:
+                raise ExCampaign('Invalid Nft List: total percent not valid !')
+        else:
+            _sum_supply = sum([nft['supply'] for nft in _list_nft])  
+            if _sum_supply != campaign_dict['total_supply']:
+                raise ExCampaign('Invalid Nft List: total suplly not valid !')
 
         if campaign_dict['campaign_method'] not in AppConstants.CampaignMethodList:
             raise ExCampaign('Invalid campaign method !')
+
+        # _check_domain_status_code, _check_subdomain_resp = check_campaign_subdoamin_valid(campaign_dict['website_domain'])
+        # if _check_domain_status_code != 200:
+        #     raise ExCampaign(f"Submmited subdomain error: {_check_subdomain_resp['msg']}")
+        
+        # if _check_domain_status_code == 200 and not _check_subdomain_resp['data']['is_valid']:
+        #     raise ExCampaign(f"Submitted submomain is invalid ! Already existed !")
 
         CampaignModel.insert(campaign_dict)
 
@@ -115,6 +122,8 @@ class CampaignService(object):
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permissions to release this campagn !")
         
+        # status, resp = _campaign["website_domain"]
+
         CampaignModel.update(
             oid=campaign_id,
             obj={
@@ -122,4 +131,11 @@ class CampaignService(object):
             }
         )
 
+
+
         return campaign_id, True
+
+    @classmethod
+    def get_campaign_details_by_subdomain(cls, subdoamin):
+        # hard code for client build UI
+        return CampaignModel.get_item(oid="6285fc1a8e445aaef2c2d7ec")

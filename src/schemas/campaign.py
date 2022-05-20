@@ -64,8 +64,8 @@ class FormCreateNewCampaign(Schema):
     chain_currency = fields.Str(required=True)
     total_supply = fields.Int(required=True) 
     total_raise = fields.Int(required=True)
-    start_time = fields.DateTime(required=True)
-    end_time = fields.DateTime(required=True)
+    start_time = ResDatetimeField(required=True)
+    end_time = ResDatetimeField(required=True)
     website_domain = fields.Str(required=True)
     social_link = fields.Dict(allow_none=True)
     campaign_method = fields.Int(required=True)
@@ -218,6 +218,8 @@ class ReleaseCampaignResp(Schema):
     
     _id = fields.Str(required=True)
     is_released = fields.Bool(required=True)
+
+
 
 
 
