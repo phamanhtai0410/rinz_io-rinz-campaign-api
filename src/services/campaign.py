@@ -26,6 +26,7 @@ from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
 from src.helpers.campaign import check_campaign_subdoamin_valid
+import src.workers.campaign as campaign_worker
 
 
 class CampaignService(object):
@@ -122,7 +123,12 @@ class CampaignService(object):
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permissions to release this campagn !")
         
-        # status, resp = _campaign["website_domain"]
+        campaign_worker.create_domain(
+            campaign_id=_campaign["_id"],
+            subdomain=_campaign["website_domain"]
+        )
+
+        # print("*** Subdomain Creation Result : ", _creation_result)
 
         CampaignModel.update(
             oid=campaign_id,
@@ -130,8 +136,6 @@ class CampaignService(object):
                 "is_released": True
             }
         )
-
-
 
         return campaign_id, True
 

@@ -37,7 +37,7 @@ def check_campaign_subdoamin_valid(subdomain, campaign_id=None):
         _payload = {
             "domain": subdomain
         }
-        
+
         if campaign_id:
             _payload["campaign_id"] = campaign_id
 
@@ -48,5 +48,32 @@ def check_campaign_subdoamin_valid(subdomain, campaign_id=None):
         log_any(f'Call IAPI service check domain {subdomain}: {resp.status_code}  {resp.text}')
         return resp.status_code, resp.json()
     except Exception as e:
-        traceback.print_exc(e)
+        print(e)
+        return 400, {}
+
+
+
+"""
+    Function: Call IAPI service to create new subdomain
+    @params: 
+    @return: True or False
+"""
+def create_new_submomain(subdomain, campaign_id):
+    try:
+        _payload = {
+            "domain": subdomain,
+            "campaign_id": campaign_id
+        }
+
+        resp = requests.post(
+            '{}/domain'.format(DefaultConfig.IAPI_URL),
+            json=_payload,
+            verify=False,
+            timeout=5
+        )
+
+        log_any(f'Call IAPI service create domain {subdomain}: {resp.status_code}  {resp.text}')
+        return resp.status_code, resp.json()
+    except Exception as e:
+        print(e)
         return 400, {}
