@@ -122,6 +122,8 @@ class CampaignService(object):
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permissions to release this campagn !")
         
+        # status, resp = _campaign["website_domain"]
+
         CampaignModel.update(
             oid=campaign_id,
             obj={

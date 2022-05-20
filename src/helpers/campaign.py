@@ -6,7 +6,6 @@ import json
 import traceback
 import requests
 from src.constants import AppConstants
-from sentry_sdk import capture_exception
 from src.config import DefaultConfig
 
 
@@ -47,4 +46,4 @@ def check_campaign_subdoamin_valid(subdomain, campaign_id=None):
         return resp.status_code, resp.json()
     except Exception as e:
         traceback.print_exc(e)
-        capture_exception(e)
+        return 400, {}
