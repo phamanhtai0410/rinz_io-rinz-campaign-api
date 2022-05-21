@@ -167,6 +167,7 @@ class NftOfCampaignResp(Schema):
     percent = fields.Float(allow_none=True)
     description = fields.Str(allow_none=True)
     current_sell = fields.Int(allow_none=True, missing='')
+    index_type = fields.Int(allow_none=True, missing='')
 
 
 class SingleCampaign(Schema):
