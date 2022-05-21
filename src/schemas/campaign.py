@@ -21,8 +21,6 @@
         -
 """
 
-from email.policy import default
-from attr import fields_dict
 from marshmallow import EXCLUDE, INCLUDE, fields, Schema
 from lib.schema.req import ResDatetimeField, ObjectIdField
 from src.enums.campaign import CampaignGetList
@@ -156,6 +154,20 @@ class GetListCampaignParams(Schema):
     page_size = fields.Int(allow_none=True, default=CampaignGetList.DEFAULT_PAGE_SIZE)
 
 
+class NftOfCampaignResp(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+    
+    name = fields.Str(required=True)
+    image_uri = fields.Str(required=True)
+    supply = fields.Int(allow_none=True)
+    price = fields.Float(required=True)
+    type = fields.Str(required=True)
+    percent = fields.Float(allow_none=True)
+    description = fields.Str(allow_none=True)
+    current_sell = fields.Int(allow_none=True, missing='')
+
 
 class SingleCampaign(Schema):
     class Meta:
@@ -172,6 +184,7 @@ class SingleCampaign(Schema):
     chain_name = fields.Str(required=True, default='BSC')
     chain_currency = fields.Str(required=True)
     total_supply = fields.Int(required=True) 
+    current_sell = fields.Int(allow_none=True, missing='')
     total_raise = fields.Int(required=True)
     start_time = ResDatetimeField(required=True)
     end_time = ResDatetimeField(required=True)
@@ -179,7 +192,7 @@ class SingleCampaign(Schema):
     social_link = fields.Dict(allow_none=True)
     campaign_method = fields.Int(required=True)
     random_nft = fields.Bool(required=True)
-    nft_list = fields.List(fields.Nested(FormNftOfCampaign()))
+    nft_list = fields.List(fields.Nested(NftOfCampaignResp()))
 
     contract = fields.Str(required=True)
     is_released = fields.Bool(required=True)
