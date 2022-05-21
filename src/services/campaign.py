@@ -47,12 +47,12 @@ class CampaignService(object):
         if campaign_dict['campaign_method'] not in AppConstants.CampaignMethodList:
             raise ExCampaign('Invalid campaign method !')
 
-        _check_domain_status_code, _check_subdomain_resp = check_campaign_subdoamin_valid(campaign_dict['website_domain'])
-        if _check_domain_status_code != 200:
-            raise ExCampaign(f"Submmited subdomain error: {_check_subdomain_resp['msg']}")
+        # _check_domain_status_code, _check_subdomain_resp = check_campaign_subdoamin_valid(campaign_dict['website_domain'])
+        # if _check_domain_status_code != 200:
+        #     raise ExCampaign(f"Submmited subdomain error: {_check_subdomain_resp['msg']}")
         
-        if _check_domain_status_code == 200 and not _check_subdomain_resp['data']['is_valid']:
-            raise ExCampaign(f"Submitted submomain is invalid ! Already existed !")
+        # if _check_domain_status_code == 200 and not _check_subdomain_resp['data']['is_valid']:
+        #     raise ExCampaign(f"Submitted submomain is invalid ! Already existed !")
 
         CampaignModel.insert(campaign_dict)
 

@@ -77,3 +77,15 @@ def create_new_submomain(subdomain, campaign_id):
     except Exception as e:
         print(e)
         return 400, {}
+
+
+""""
+    Functions: Call Wallet-IAPI to deploy campaign SMC
+"""
+def deploy_smc(campaign_id: str):
+    try:
+        
+        pass
+    except Exception as e:
+        print(e)
+        return 400, {}
