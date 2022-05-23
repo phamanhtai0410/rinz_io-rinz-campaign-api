@@ -1,4 +1,4 @@
-from email.policy import default
+
 from pymodm import fields
 from lib.enums.database import DBName
 from lib.model import BaseMG

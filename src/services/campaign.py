@@ -27,6 +27,7 @@ from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
 from src.helpers.campaign import check_campaign_subdoamin_valid
 import src.workers.campaign as campaign_worker
+from bson import ObjectId
 
 
 class CampaignService(object):
@@ -68,7 +69,7 @@ class CampaignService(object):
     @classmethod
     def edit_non_release_campaign(cls, user_id, campaign_id, edit_infos):
         
-        _campaign = CampaignModel.get_item(oid=campaign_id).to_dict()
+        _campaign = CampaignModel.get_item(oid=campaign_id)
         
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permission to update this campaign !")
@@ -76,8 +77,10 @@ class CampaignService(object):
         if _campaign['is_released']:
             raise ExCampaign("This campaign's already released !")
 
-        CampaignModel.update(
-            oid=campaign_id,
+        CampaignModel.update_one(
+            filter={
+                "_id": ObjectId(campaign_id)
+            },
             obj=edit_infos
         )
         
@@ -94,8 +97,10 @@ class CampaignService(object):
         if not _campaign['is_realeased']:
             raise ExCampaign("This campaign's not a released one !")
 
-        CampaignModel.update(
-            oid=campaign_id,
+        CampaignModel.update_one(
+            filter={
+                "_id": ObjectId(campaign_id)
+            },
             obj=edit_infos
         )
 
