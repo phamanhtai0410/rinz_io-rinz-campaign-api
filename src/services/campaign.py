@@ -25,7 +25,7 @@ from src.models.campaign import CampaignModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
-from src.helpers.campaign import check_campaign_subdoamin_valid
+from src.helpers.campaign import check_campaign_subdomain_valid
 import src.workers.campaign as campaign_worker
 from bson import ObjectId
 
@@ -48,12 +48,12 @@ class CampaignService(object):
         if campaign_dict['campaign_method'] not in AppConstants.CampaignMethodList:
             raise ExCampaign('Invalid campaign method !')
 
-        _check_domain_status_code, _check_subdomain_resp = check_campaign_subdoamin_valid(campaign_dict['website_domain'])
+        _check_domain_status_code, _check_subdomain_resp = check_campaign_subdomain_valid(campaign_dict['website_domain'])
         if _check_domain_status_code != 200:
-            raise ExCampaign(f"Submmited subdomain error: {_check_subdomain_resp['msg']}")
+            raise ExCampaign(f"Submitted subdomain error: {_check_subdomain_resp['msg']}")
         
         if _check_domain_status_code == 200 and not _check_subdomain_resp['data']['result']:
-            raise ExCampaign(f"Submitted submomain is invalid ! Already existed !")
+            raise ExCampaign(f"Submitted subdomain is invalid ! Already existed !")
         
         if not campaign_dict["random_nft"]:
             _typeIndex = 1
@@ -135,24 +135,25 @@ class CampaignService(object):
         #       @params: subdomain need to be created
         #       @return: result of creation: True or False and created subdomain 
 
-        campaign_worker.create_domain(
-            campaign_id=_campaign["_id"],
+        _creation_result = campaign_worker.create_domain(
+            campaign_id=campaign_id,
             subdomain=_campaign["website_domain"]
         )
-        # print("*** Subdomain Creation Result : ", _creation_result)
+        print("*** Subdomain Creation Result : ", _creation_result)
 
         #       Update released status in db record
         #       @params: None
         #       @return: update field: "is_released": True
+        if _creation_result:
 
-        CampaignModel.update_one(
-            filter={
-                "_id": ObjectId(campaign_id)
-            },
-            obj={
-                "is_released": True
-            }
-        )
+            CampaignModel.update_one(
+                filter={
+                    "_id": ObjectId(campaign_id)
+                },
+                obj={
+                    "is_released": True
+                }
+            )
 
         #       Call to CampaignFactory to deploy new campaign contract
         #       params: infors of campaigns
@@ -161,6 +162,6 @@ class CampaignService(object):
         return campaign_id, True
 
     @classmethod
-    def get_campaign_details_by_subdomain(cls, subdoamin):
+    def get_campaign_details_by_subdomain(cls, subdomain):
         # hard code for client build UI
         return CampaignModel.get_item(oid="6285fc1a8e445aaef2c2d7ec")

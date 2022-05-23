@@ -32,7 +32,9 @@ def log_any(x, *args, **kwargs):
     @params: campaign_id <string>
     @return: True if sub_domain is valid 
 """
-def check_campaign_subdoamin_valid(subdomain, campaign_id=None):
+
+
+def check_campaign_subdomain_valid(subdomain, campaign_id=None):
     try:
         _payload = {
             "domain": subdomain
@@ -52,13 +54,14 @@ def check_campaign_subdoamin_valid(subdomain, campaign_id=None):
         return 400, {}
 
 
-
 """
     Function: Call IAPI service to create new subdomain
     @params: 
     @return: True or False
 """
-def create_new_submomain(subdomain, campaign_id):
+
+
+def create_new_subdomain(subdomain, campaign_id):
     try:
         _payload = {
             "domain": subdomain,
@@ -82,6 +85,8 @@ def create_new_submomain(subdomain, campaign_id):
 """"
     Functions: Call Wallet-IAPI to deploy campaign SMC
 """
+
+
 def deploy_smc(campaign_id: str):
     try:
         

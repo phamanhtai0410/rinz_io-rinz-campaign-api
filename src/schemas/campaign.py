@@ -71,8 +71,6 @@ class FormCreateNewCampaign(Schema):
     nft_list = fields.List(fields.Nested(FormNftOfCampaign()))
 
 
-
-
 class CreateNewCampaignResp(Schema):
     class Meta:
         unknown = EXCLUDE
@@ -85,6 +83,7 @@ class CreateNewCampaignResp(Schema):
 """
     Campaign Editor
 """
+
 
 class FormNonReleasedCampaignEditor(Schema):
     class Meta:
@@ -111,7 +110,6 @@ class FormNonReleasedCampaignEditor(Schema):
     campaign_method = fields.Int(allow_none=True)
     random_nft = fields.Bool(allow_none=True)
     nft_list = fields.List(fields.Nested(FormNftOfCampaign()))
-
 
 
 class FormReleasedCampaignEditor(Schema):
