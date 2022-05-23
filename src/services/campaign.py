@@ -58,7 +58,7 @@ class CampaignService(object):
             _typeIndex = 1
             for _nft in campaign_dict["nft_list"]:
                 _nft["index_type"] = _typeIndex
-                _indexType += 1
+                _typeIndex += 1
         
         CampaignModel.insert(campaign_dict)
 
@@ -129,19 +129,32 @@ class CampaignService(object):
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permissions to release this campagn !")
         
+        ###     Create submodomain for campaign 
+        #       @params: subdomain need to be created
+        #       @return: result of creation: True or False and created subdomain 
+
         campaign_worker.create_domain(
             campaign_id=_campaign["_id"],
             subdomain=_campaign["website_domain"]
         )
-
         # print("*** Subdomain Creation Result : ", _creation_result)
 
+        ###     Update released status in db record  
+        #       @params: None
+        #       @return: update field: "is_released": True     
         CampaignModel.update(
             oid=campaign_id,
             obj={
                 "is_released": True
             }
         )
+
+
+        ###     Call to CampaignFactory to deploy new campaign contract
+        #       params: infors of campaigns
+        #       return: created campaign contract's address
+        
+
 
         return campaign_id, True
 
