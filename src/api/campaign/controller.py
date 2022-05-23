@@ -122,7 +122,7 @@ def release_campaign(wallet, params, *args, **kwargs):
 
 @lib.handle_res(res_schema=SingleCampaign, login=False)
 def get_campaign_details(subdomain, *args, **kwargs):
-
+    print(subdomain)
     # Hardcode Campaign for client get info of page Campaign Details
     _details = CampaignService.get_campaign_details_by_subdomain(subdomain)
-    return _details
+    return _details or {}
