@@ -108,7 +108,6 @@ def list_campaigns(wallet, *args, **kwargs):
     }
 
 
-
 @lib.handle_res(param_schema=ReleaseCampaignParams, res_schema=ReleaseCampaignResp)
 def release_campaign(wallet, params, *args, **kwargs):
     _campaign_id = params.campaign_id
@@ -119,7 +118,6 @@ def release_campaign(wallet, params, *args, **kwargs):
         "_id": _id,
         "is_released": _is_released
     }
-
 
 
 @lib.handle_res(res_schema=SingleCampaign, login=False)

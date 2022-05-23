@@ -54,3 +54,6 @@ class DefaultConfig(BaseConfig):
     # IAPI server
     IAPI_URL = os.getenv('IAPI_URL')
 
+    # Factory address
+    # RINZ_CAMPAIGN_FACTORY_ADDRESS = os.getenv("RINZ_CAMPAIGN_FACTORY_ADDRESS")
+

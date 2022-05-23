@@ -145,7 +145,6 @@ class CampaignService(object):
         #       @params: None
         #       @return: update field: "is_released": True
         if _creation_result:
-
             CampaignModel.update_one(
                 filter={
                     "_id": ObjectId(campaign_id)
@@ -155,13 +154,19 @@ class CampaignService(object):
                 }
             )
 
-        #       Call to CampaignFactory to deploy new campaign contract
-        #       params: infors of campaigns
-        #       return: created campaign contract's address
+            #       Call to CampaignFactory to deploy new campaign contract
+            #       params: infors of campaigns
+            #       return: created campaign contract's address
+            # _campaign_address =
 
-        return campaign_id, True
+            return campaign_id, True
+
+        return campaign_id, False
 
     @classmethod
     def get_campaign_details_by_subdomain(cls, subdomain):
         # hard code for client build UI
-        return CampaignModel.get_item(oid="6285fc1a8e445aaef2c2d7ec")
+        # return CampaignModel.get_item(oid="6285fc1a8e445aaef2c2d7ec")
+        return CampaignModel.get_item_with(filter={
+            "website_domain": subdomain
+        })
