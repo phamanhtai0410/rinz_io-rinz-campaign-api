@@ -30,6 +30,7 @@ from src.enums.campaign import CampaignGetList
     Campaign Creation
 """
 
+
 class FormNftOfCampaign(Schema):
     class Meta:
         unknown = INCLUDE
@@ -48,8 +49,7 @@ class FormCreateNewCampaign(Schema):
     class Meta:
         unknown = INCLUDE
         ordered = True
-    
-    
+
     name = fields.Str(required=True)
     description = fields.Str(allow_none=True)
     about_kol = fields.Str(allow_none=True)
@@ -127,7 +127,7 @@ class FormReleasedCampaignEditor(Schema):
     kol_image_url = fields.Str(allow_none=True)
     image_url = fields.Str(allow_none=True)
     website_domain = fields.Str(allow_none=True)
-    social_link = fields.Str(allow_none=True)
+    social_link = fields.Dict(allow_none=True)
     
 
 

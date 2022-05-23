@@ -80,7 +80,6 @@ def edit_non_released_campaign(wallet, body, *args, **kwargs):
     }
 
 
-
 @lib.handle_res(req_schema=FormReleasedCampaignEditor, res_schema=CampaignEditorResp)
 def edit_released_campaign(wallet, body, *args, **kwargs):
     _user_id = wallet.user
@@ -94,8 +93,6 @@ def edit_released_campaign(wallet, body, *args, **kwargs):
         "_id": _id,
         "edit_result": _result
     }
-
-
 
 
 @lib.handle_res(param_schema=GetListCampaignParams,res_schema=GetListCampaignsResp)

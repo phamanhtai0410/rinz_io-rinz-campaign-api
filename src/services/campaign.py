@@ -20,7 +20,7 @@
         -
         -
 """
-from src.api import campaign
+
 from src.models.campaign import CampaignModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
@@ -65,7 +65,6 @@ class CampaignService(object):
 
         return campaign_dict['name'], campaign_dict['is_released']
 
-    
     @classmethod
     def edit_non_release_campaign(cls, user_id, campaign_id, edit_infos):
         
@@ -155,12 +154,9 @@ class CampaignService(object):
             }
         )
 
-
-        #     Call to CampaignFactory to deploy new campaign contract
+        #       Call to CampaignFactory to deploy new campaign contract
         #       params: infors of campaigns
         #       return: created campaign contract's address
-        
-
 
         return campaign_id, True
 
