@@ -141,32 +141,29 @@ class CampaignService(object):
         )
         print("*** Subdomain Creation Result : ", _creation_result)
 
-        #       Update released status in db record
-        #       @params: None
-        #       @return: update field: "is_released": True
         if _creation_result:
-            CampaignModel.update_one(
-                filter={
-                    "_id": ObjectId(campaign_id)
-                },
-                obj={
-                    "is_released": True
-                }
-            )
-
             #       Call to CampaignFactory to deploy new campaign contract
             #       params: infors of campaigns
             #       return: created campaign contract's address
-            # _campaign_address =
+            print('_campaign_dict : ', _campaign, type(_campaign))
+            print('_campaign_id : ', campaign_id, type(campaign_id))
+            campaign_worker.create_campaign_smc.delay(
+                _campaign_dict=_campaign,
+                _campaign_id=campaign_id
+            )
 
             return campaign_id, True
 
-        return campaign_id, False
+        # return campaign_id, False
 
     @classmethod
     def get_campaign_details_by_subdomain(cls, subdomain):
         # hard code for client build UI
-        # return CampaignModel.get_item(oid="6285fc1a8e445aaef2c2d7ec")
-        return CampaignModel.get_item_with(filter={
+        resp = CampaignModel.get_item_with(filter={
             "website_domain": subdomain
         })
+
+        if resp is None:
+            CampaignModel.get_item(oid="6285fc1a8e445aaef2c2d7ec")
+
+        return resp

@@ -20,7 +20,6 @@
         -
         -
 """
-from re import L
 import lib
 from lib.logger import Logger
 from src.schemas.campaign import *
@@ -62,7 +61,6 @@ def create_new_campaign(wallet, body, *args, **kwargs):
         'name': name,
         'is_released': is_released
     }
-
 
 
 @lib.handle_res(req_schema=FormNonReleasedCampaignEditor, res_schema=CampaignEditorResp)

@@ -44,7 +44,8 @@ class DefaultConfig(BaseConfig):
 
     CELERY_ROUTES = {
         'worker.deploy_smc': {'queue': 'campaign-queue'},
-        'worker.create_domain': {'queue': 'campaign-queue'}
+        'worker.create_domain': {'queue': 'campaign-queue'},
+        'worker.create_campaign_smc': {'queue': 'campaign-queue'}
     }
 
     CELERY_TRACK_STARTED = "True"
@@ -53,7 +54,11 @@ class DefaultConfig(BaseConfig):
 
     # IAPI server
     IAPI_URL = os.getenv('IAPI_URL')
+    WALLET_IAPI = os.getenv('WALLET_IAPI')
 
-    # Factory address
-    # RINZ_CAMPAIGN_FACTORY_ADDRESS = os.getenv("RINZ_CAMPAIGN_FACTORY_ADDRESS")
+    # CONTRACT ADDRESS
+    RINZ_CAMPAIGN_FACTORY_ADDRESS = os.getenv("RINZ_CAMPAIGN_FACTORY_ADDRESS")
+    RINZ_MARKET_ADDRESS = os.getenv("RINZ_MARKET_ADDRESS")
+    RINZ_COIN_TOKEN_ADDRESS = os.getenv("RINZ_COIN_TOKEN_ADDRESS")
+
 

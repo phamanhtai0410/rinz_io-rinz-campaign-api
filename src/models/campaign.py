@@ -36,6 +36,8 @@ class CampaignModel(BaseMG):
     # implicit fields
     user = fields.CharField(blank=True, default='')
     contract = fields.CharField(blank=True, default='')
+    deploy_address = fields.CharField(blank=True, default='')
+    is_fixed_token = fields.BooleanField(blank=True, default=False)
     is_released = fields.BooleanField(blank=False, default=False)
     
     # campaign desciption

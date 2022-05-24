@@ -80,22 +80,3 @@ def create_new_subdomain(subdomain, campaign_id):
     except Exception as e:
         print(e)
         return 400, {}
-
-
-""""
-    Functions: Call Wallet-IAPI to deploy campaign SMC
-"""
-
-
-def create_campaign_smc(campaign_id: str):
-    try:
-        # call to wallet-iapi to call rinz_campaign_factory and create a campaign address
-        #
-        #
-
-        _address = requests.post()
-        return _address
-        pass
-    except Exception as e:
-        print(e)
-        return None
