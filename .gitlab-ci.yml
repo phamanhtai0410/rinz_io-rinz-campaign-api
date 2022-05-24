@@ -64,7 +64,6 @@ build_stag:
     - |
       if [ "$CI_COMMIT_REF_NAME" == "stag" ]; then
         sed -i -e "s#\[IMAGE_NAME_WORKER\]#$IMAGE_NAME_WORKER#g" skaffold.yaml
-
         sed -i -e "s#\[NAMESPACE\]#$NAMESPACE_STAG#g" skaffold.yaml
         sed -i -e "s#\[IMAGE_NAME\]#$IMAGE_NAME#g" skaffold.yaml
         sed -i -e "s#\[CONTAINER_REPO\]#$CONTAINER_REPO_ASIA_STAG#g" skaffold.yaml
@@ -101,6 +100,27 @@ deploy_stag:
     refs:
       - stag
 
+deploy_worker_stag:
+  stage: deploy
+  image:  alpine/helm:3.2.1
+  tags:
+  - rinz-stag
+  script:
+    - *predeploy
+    - *kubectl_config
+    - git clone https://read-token:$GITLAB_TOKEN@gitlab.rinznetwork.com/rinz-io-devops/helm-value/$IMAGE_NAME.git
+    - mv $IMAGE_NAME/worker-stag.yaml .
+    - |
+      if [ "$CI_COMMIT_REF_NAME" == "stag" ]; then
+        sed -i -e "s#\[FULLREPO_ASIA\]#$FULLREPO_ASIA_STAG#g" worker-stag.yaml
+        sed -i -e "s#\[NAMESPACE\]#$NAMESPACE_STAG#g" worker-stag.yaml
+      fi
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
+    - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.38.0/skaffold-linux-amd64 && chmod +x skaffold &&  mv skaffold /usr/local/bin
+    - /usr/local/bin/skaffold deploy -p profile-worker-stag   -a build.json
+  only:
+    refs:
+      - stag
 build_prod:
   image: docker:19.03.1
   tags:
@@ -123,7 +143,6 @@ build_prod:
       if [ "$CI_COMMIT_REF_NAME" == "master" ]; then
         sed -i -e "s#\[NAMESPACE\]#$NAMESPACE_PROD#g" skaffold.yaml
         sed -i -e "s#\[IMAGE_NAME_WORKER\]#$IMAGE_NAME_WORKER#g" skaffold.yaml
-
         sed -i -e "s#\[IMAGE_NAME\]#$IMAGE_NAME#g" skaffold.yaml
         sed -i -e "s#\[CONTAINER_REPO\]#$CONTAINER_REPO_ASIA_PROD#g" skaffold.yaml
       fi
@@ -159,3 +178,25 @@ deploy_prod:
     refs:
       - master
 
+
+deploy_worker_prod:
+  stage: deploy
+  image:  alpine/helm:3.2.1
+  tags:
+  - rinz-prod
+  script:
+    - *predeploy
+    - *kubectl_config
+    - git clone https://read-token:$GITLAB_TOKEN@gitlab.rinznetwork.com/rinz-io-devops/helm-value/$IMAGE_NAME.git
+    - mv $IMAGE_NAME/worker-prod.yaml .
+    - |
+      if [ "$CI_COMMIT_REF_NAME" == "master" ]; then
+        sed -i -e "s#\[FULLREPO_ASIA\]#$FULLREPO_ASIA_PROD#g" worker-prod.yaml
+        sed -i -e "s#\[NAMESPACE\]#$NAMESPACE_PROD#g" worker-prod.yaml
+      fi
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
+    - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.38.0/skaffold-linux-amd64 && chmod +x skaffold &&  mv skaffold /usr/local/bin
+    - /usr/local/bin/skaffold deploy -p profile-worker-prod   -a build.json
+  only:
+    refs:
+      - master
