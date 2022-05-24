@@ -1,6 +1,8 @@
 variables:
   REGION: asia-southeast1
   IMAGE_NAME: rinz-campaign-api
+  IMAGE_NAME_WORKER: rinz-campaign-api-worker
+
   CONTAINER_REPO_ASIA_STAG: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-staging-ecr/campaign-api
   CONTAINER_REPO_ASIA_PROD: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-production-ecr/campaign-api
   NAMESPACE_STAG: api-stag
@@ -61,6 +63,8 @@ build_stag:
     - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $CONTAINER_REPO_ASIA_STAG
     - |
       if [ "$CI_COMMIT_REF_NAME" == "stag" ]; then
+        sed -i -e "s#\[IMAGE_NAME_WORKER\]#$IMAGE_NAME_WORKER#g" skaffold.yaml
+
         sed -i -e "s#\[NAMESPACE\]#$NAMESPACE_STAG#g" skaffold.yaml
         sed -i -e "s#\[IMAGE_NAME\]#$IMAGE_NAME#g" skaffold.yaml
         sed -i -e "s#\[CONTAINER_REPO\]#$CONTAINER_REPO_ASIA_STAG#g" skaffold.yaml
@@ -118,6 +122,8 @@ build_prod:
     - |
       if [ "$CI_COMMIT_REF_NAME" == "master" ]; then
         sed -i -e "s#\[NAMESPACE\]#$NAMESPACE_PROD#g" skaffold.yaml
+        sed -i -e "s#\[IMAGE_NAME_WORKER\]#$IMAGE_NAME_WORKER#g" skaffold.yaml
+
         sed -i -e "s#\[IMAGE_NAME\]#$IMAGE_NAME#g" skaffold.yaml
         sed -i -e "s#\[CONTAINER_REPO\]#$CONTAINER_REPO_ASIA_PROD#g" skaffold.yaml
       fi
