@@ -45,7 +45,7 @@ def create_campaign_smc(_campaign_dict, _campaign_id, *args, **kwargs):
         "_id": _campaign_id,
         "start_time": _campaign_dict["start_time"].replace(tzinfo=timezone.utc).timestamp(),
         "end_time": _campaign_dict["end_time"].replace(tzinfo=timezone.utc).timestamp(),
-        "symbol": _campaign_dict["chain_currency"],
+        "symbol": _campaign_dict["allocation_symbol"],
         "market_address": DefaultConfig.RINZ_MARKET_ADDRESS,
         "factory_address": DefaultConfig.RINZ_CAMPAIGN_FACTORY_ADDRESS,
         "token_address": DefaultConfig.RINZ_COIN_TOKEN_ADDRESS,
