@@ -201,7 +201,7 @@ class SingleCampaign(Schema):
 
     contract = fields.Str(required=True)
     is_released = fields.Bool(required=True)
-    description = fields.List(fields.Nested(CampaignDescription()), missing='')
+    description = fields.List(fields.Nested(CampaignDescription()), missing=[])
     about_kol = fields.Str(missing='')
     kol_image_url = fields.Str(missing='')
 
