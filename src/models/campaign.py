@@ -41,6 +41,6 @@ class CampaignModel(BaseMG):
     is_released = fields.BooleanField(blank=False, default=False)
     
     # campaign desciption
-    description = fields.CharField(blank=True, default='')
+    description = fields.ListField(blank=True, default=[])
     about_kol = fields.CharField(blank=True, default='')
     kol_image_url = fields.CharField(blank=True, default='')
