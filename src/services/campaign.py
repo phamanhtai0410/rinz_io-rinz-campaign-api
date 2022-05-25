@@ -31,7 +31,6 @@ from bson import ObjectId
 from datetime import datetime, timezone
 
 
-
 class CampaignService(object):
 
     @classmethod

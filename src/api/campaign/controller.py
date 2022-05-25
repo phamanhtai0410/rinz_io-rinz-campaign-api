@@ -34,24 +34,7 @@ def create_new_campaign(wallet, body, *args, **kwargs):
     # _user_id = 'test_user_id'
     _campaign_info = {
         'user': _user_id,
-        'contract': '',
-        'is_released': False,
-        'name': body.name, 
-        'image_url': body.image_url,
-        'hightlight_text': body.hightlight_text,
-        'max_allocation': body.max_allocation,
-        'allocation_symbol': body.allocation_symbol,
-        'chain_name': body.chain_name,
-        'chain_currency': body.chain_currency,
-        'total_supply': body.total_supply,
-        'total_raise': body.total_raise,
-        'start_time': body.start_time,
-        'end_time': body.end_time,
-        'website_domain': body.website_domain,
-        'social_link': body.social_link, 
-        'campaign_method': body.campaign_method, 
-        'random_nft': body.random_nft, 
-        'nft_list': body.nft_list
+        **body.__dict__
     }
     
     # Call service process api
