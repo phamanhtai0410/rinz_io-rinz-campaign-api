@@ -44,7 +44,7 @@ class CampaignService(object):
         else:
             _sum_supply = sum([nft['supply'] for nft in _list_nft])  
             if _sum_supply != campaign_dict['total_supply']:
-                raise ExCampaign('Invalid Nft List: total suplly not valid !')
+                raise ExCampaign('Invalid Nft List: total supply not valid !')
 
         if campaign_dict['campaign_method'] not in AppConstants.CampaignMethodList:
             raise ExCampaign('Invalid campaign method !')

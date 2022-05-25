@@ -38,6 +38,8 @@ def create_new_campaign(wallet, body, *args, **kwargs):
         'is_released': False,
         **body.__dict__
     }
+
+    print("*** Campaign Information for create : ", _campaign_info)
     
     # Call service process api
     name, is_released = CampaignService.create_campaign(_campaign_info)
