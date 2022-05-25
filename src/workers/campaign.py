@@ -54,7 +54,7 @@ def create_campaign_smc(_campaign_dict, _campaign_id, *args, **kwargs):
 
     print("worker : ", _payload)
     resp = requests.post(
-        f"{DefaultConfig.WALLET_IAPI}/deploy/campaign",
+        f"{DefaultConfig.IAPI_URL}/deploy/campaign",
         json=_payload,
         verify=False,
         timeout=10
