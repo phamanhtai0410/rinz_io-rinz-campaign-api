@@ -5,7 +5,6 @@
 import json
 import traceback
 import requests
-from src.constants import AppConstants
 from src.config import DefaultConfig
 
 
@@ -80,3 +79,7 @@ def create_new_subdomain(subdomain, campaign_id):
     except Exception as e:
         print(e)
         return 400, {}
+
+
+
+

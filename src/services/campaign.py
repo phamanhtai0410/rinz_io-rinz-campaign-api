@@ -20,7 +20,7 @@
         -
         -
 """
-
+import json
 from src.models.campaign import CampaignModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
@@ -28,6 +28,8 @@ from src.enums.campaign import CampaignGetList
 from src.helpers.campaign import check_campaign_subdomain_valid
 import src.workers.campaign as campaign_worker
 from bson import ObjectId
+from datetime import datetime, timezone
+
 
 
 class CampaignService(object):
@@ -147,8 +149,17 @@ class CampaignService(object):
             #       return: created campaign contract's address
             print('_campaign_dict : ', _campaign, type(_campaign))
             print('_campaign_id : ', campaign_id, type(campaign_id))
+
+            for _key, _value in _campaign.items():
+                if isinstance(_value, ObjectId):
+                    _campaign[_key] = str(_value)
+                if isinstance(_value, datetime):
+                    _campaign[_key] = _value.replace(tzinfo=timezone.utc).timestamp()
+
+            print('_campaign_dict after encode: ', _campaign, type(_campaign))
+
             campaign_worker.create_campaign_smc.delay(
-                _campaign_dict=_campaign,
+                _campaign_dict=dict(_campaign),
                 _campaign_id=campaign_id
             )
 

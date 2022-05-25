@@ -45,13 +45,19 @@ class FormNftOfCampaign(Schema):
     description = fields.Str(allow_none=True)
 
 
+class CampaignDescription(Schema):
+    title = fields.Str(required=True)
+    html_content = fields.Str(required=True)
+    image_uri = fields.Str(allow_none=True, missing='')
+
+
 class FormCreateNewCampaign(Schema):
     class Meta:
         unknown = INCLUDE
         ordered = True
 
     name = fields.Str(required=True)
-    description = fields.Str(allow_none=True)
+    description = fields.List(fields.Nested(CampaignDescription()), allow_none=True, missing=[])
     about_kol = fields.Str(allow_none=True)
     kol_image_url = fields.Str(allow_none=True)
     image_url = fields.Str(required=True)
@@ -92,7 +98,7 @@ class FormNonReleasedCampaignEditor(Schema):
     
     _id = fields.Str(required=True)
     name = fields.Str(allow_none=True)
-    description = fields.Str(allow_none=True)
+    description = fields.List(fields.Nested(CampaignDescription()), allow_none=True)
     about_kol = fields.Str(allow_none=True)
     kol_image_url = fields.Str(allow_none=True)
     image_url = fields.Str(required=True)
@@ -120,13 +126,12 @@ class FormReleasedCampaignEditor(Schema):
     _id = fields.Str(required=True)
     name = fields.Str(allow_none=True)
     hightlight_text = fields.Str(allow_none=True)
-    description = fields.Str(allow_none=True)
+    description = fields.List(fields.Nested(CampaignDescription()), allow_none=True)
     about_kol = fields.Str(allow_none=True)
     kol_image_url = fields.Str(allow_none=True)
     image_url = fields.Str(allow_none=True)
     website_domain = fields.Str(allow_none=True)
     social_link = fields.Dict(allow_none=True)
-    
 
 
 class CampaignEditorResp(Schema):
@@ -141,6 +146,7 @@ class CampaignEditorResp(Schema):
 """
     Campaign Get List
 """
+
 
 class GetListCampaignParams(Schema):
 
@@ -164,6 +170,7 @@ class NftOfCampaignResp(Schema):
     type = fields.Str(required=True)
     percent = fields.Float(allow_none=True)
     description = fields.Str(allow_none=True)
+
     current_sell = fields.Int(allow_none=True, missing='')
     index_type = fields.Int(allow_none=True, missing='')
 
@@ -172,8 +179,7 @@ class SingleCampaign(Schema):
     class Meta:
         unknown = EXCLUDE
         ordered = True
-    
-    
+
     _id = ObjectIdField(required=True)
     name = fields.Str(required=True)
     image_url = fields.Str(required=True)
@@ -195,11 +201,9 @@ class SingleCampaign(Schema):
 
     contract = fields.Str(required=True)
     is_released = fields.Bool(required=True)
-
-    description = fields.Str(missing='')
+    description = fields.List(fields.Nested(CampaignDescription()), missing='')
     about_kol = fields.Str(missing='')
     kol_image_url = fields.Str(missing='')
-
 
 
 class GetListCampaignsResp(Schema):
@@ -212,16 +216,18 @@ class GetListCampaignsResp(Schema):
     campaigns = fields.List(fields.Nested(SingleCampaign()))
 
 
-
 """
     Campaign Release
 """
+
+
 class ReleaseCampaignParams(Schema):
     class Meta:
         unknown = INCLUDE
         ordered = True
 
     campaign_id = fields.Str(required=True)
+
 
 class ReleaseCampaignResp(Schema):
     class Meta:

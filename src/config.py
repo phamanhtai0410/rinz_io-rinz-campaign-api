@@ -43,7 +43,6 @@ class DefaultConfig(BaseConfig):
     CELERY_DEFAULT_QUEUE = 'campaign-queue'
 
     CELERY_ROUTES = {
-        'worker.deploy_smc': {'queue': 'campaign-queue'},
         'worker.create_domain': {'queue': 'campaign-queue'},
         'worker.create_campaign_smc': {'queue': 'campaign-queue'}
     }
@@ -51,6 +50,8 @@ class DefaultConfig(BaseConfig):
     CELERY_TRACK_STARTED = "True"
 
     CELERY_ENABLE_UTC = True
+
+    CELERY_IMPORTS = ['src.workers']
 
     # IAPI server
     IAPI_URL = os.getenv('IAPI_URL')
