@@ -34,6 +34,8 @@ def create_new_campaign(wallet, body, *args, **kwargs):
     # _user_id = 'test_user_id'
     _campaign_info = {
         'user': _user_id,
+        'contract': '',
+        'is_released': False,
         **body.__dict__
     }
     
