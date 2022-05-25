@@ -40,7 +40,8 @@ class CampaignModel(BaseMG):
     is_fixed_token = fields.BooleanField(blank=True, default=False)
     is_released = fields.BooleanField(blank=False, default=False)
     
-    # campaign desciption
+    # campaign description
     description = fields.ListField(blank=True, default=[])
     about_kol = fields.CharField(blank=True, default='')
     kol_image_url = fields.CharField(blank=True, default='')
+

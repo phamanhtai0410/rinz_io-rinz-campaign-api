@@ -171,7 +171,7 @@ class NftOfCampaignResp(Schema):
     percent = fields.Float(allow_none=True)
     description = fields.Str(allow_none=True)
 
-    current_sell = fields.Int(allow_none=True, missing='')
+    current_sell = fields.Int(allow_none=True, missing=0)
     index_type = fields.Int(allow_none=True, missing='')
 
 
@@ -189,7 +189,7 @@ class SingleCampaign(Schema):
     chain_name = fields.Str(required=True, default='BSC')
     chain_currency = fields.Str(required=True)
     total_supply = fields.Int(required=True) 
-    current_sell = fields.Int(allow_none=True, missing='')
+    current_sell = fields.Int(allow_none=True, missing=0)
     total_raise = fields.Int(required=True)
     start_time = ResDatetimeField(required=True)
     end_time = ResDatetimeField(required=True)
