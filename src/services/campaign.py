@@ -22,12 +22,14 @@
 """
 import json
 from src.models.campaign import CampaignModel
+from src.models.nft_supply import SupplyNFTModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
 from src.helpers.campaign import check_campaign_subdomain_valid
 import src.workers.campaign as campaign_worker
 from bson import ObjectId
+from lib.logger import Logger
 from datetime import datetime, timezone
 
 
@@ -66,7 +68,7 @@ class CampaignService(object):
             _nft["index_type"] = _typeIndex
             _typeIndex += 1
 
-        print("Campaign dict have index_type : ", campaign_dict)
+        Logger.debug("Campaign dict have index_type : ", campaign_dict)
         
         CampaignModel.insert(campaign_dict)
 
@@ -179,7 +181,15 @@ class CampaignService(object):
             "website_domain": subdomain
         })
 
-        if resp is None:
-            CampaignModel.get_item(oid="6285fc1a8e445aaef2c2d7ec")
+        # for _nft in resp["nft_list"]:
+        #     _supply = SupplyNFTModel.get_item_with(
+        #         filter={
+        #             "contract": resp["contract"],
+        #             "type": ""
+        #         }
+        #     )
+
+
+
 
         return resp
