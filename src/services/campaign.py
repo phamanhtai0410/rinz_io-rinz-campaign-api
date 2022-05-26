@@ -38,6 +38,7 @@ class CampaignService(object):
         _list_nft = campaign_dict['nft_list']
         
         if campaign_dict["random_nft"]:
+
             _sum_percent = sum([nft['percent'] for nft in _list_nft])
             if _sum_percent != 100:
                 raise ExCampaign('Invalid Nft List: total percent not valid !')
@@ -65,6 +66,8 @@ class CampaignService(object):
             for _nft in campaign_dict["nft_list"]:
                 _nft["index_type"] = _typeIndex
                 _typeIndex += 1
+
+        print("Campaign dict have index_type : ", campaign_dict)
         
         CampaignModel.insert(campaign_dict)
 
