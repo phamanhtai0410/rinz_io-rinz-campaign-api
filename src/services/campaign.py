@@ -42,13 +42,17 @@ class CampaignService(object):
             if _sum_percent != 100:
                 raise ExCampaign('Invalid Nft List: total percent not valid !')
         else:
-            _sum_supply = sum([nft['supply'] for nft in _list_nft])  
+            _sum_supply = sum([nft['supply'] for nft in _list_nft])
+            _sum_raise = sum([nft['supply'] * nft['price'] for nft in _list_nft])
             if _sum_supply != campaign_dict['total_supply']:
                 raise ExCampaign('Invalid Nft List: total supply not valid !')
+            if _sum_raise != campaign_dict["total_raise"]:
+                raise ExCampaign('Invalid Nft List: total raise not valid !')
 
         if campaign_dict['campaign_method'] not in AppConstants.CampaignMethodList:
             raise ExCampaign('Invalid campaign method !')
 
+        # Check if subdomain
         _check_domain_status_code, _check_subdomain_resp = check_campaign_subdomain_valid(campaign_dict['website_domain'])
         if _check_domain_status_code != 200:
             raise ExCampaign(f"Submitted subdomain error: {_check_subdomain_resp['msg']}")

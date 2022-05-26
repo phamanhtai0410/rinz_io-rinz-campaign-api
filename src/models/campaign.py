@@ -24,7 +24,7 @@ class CampaignModel(BaseMG):
     chain_name = fields.CharField(blank=True, default='BSC')
     chain_currency = fields.CharField(blank=True, default='BNB')
     total_supply = fields.IntegerField(blank=True, default=1) 
-    total_raise = fields.IntegerField(blank=True, default=1)
+    total_raise = fields.FloatField(blank=True, default=1)
     start_time = fields.DateTimeField(blank=True)
     end_time = fields.DateTimeField(blank=True)
     website_domain = fields.CharField(blank=True, default='')

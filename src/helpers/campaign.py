@@ -81,5 +81,15 @@ def create_new_subdomain(subdomain, campaign_id):
         return 400, {}
 
 
+"""
+    Validator function for input data
+"""
+
+
+def is_valid_number(_number) -> bool:
+    if _number < 0:
+        return False
+    return True
+
 
 

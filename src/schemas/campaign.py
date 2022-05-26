@@ -21,9 +21,10 @@
         -
 """
 
-from marshmallow import EXCLUDE, INCLUDE, fields, Schema
+from marshmallow import EXCLUDE, INCLUDE, fields, Schema, validate
 from lib.schema.req import ResDatetimeField, ObjectIdField
 from src.enums.campaign import CampaignGetList
+from src.helpers.campaign import is_valid_number
 
 
 """
@@ -38,8 +39,8 @@ class FormNftOfCampaign(Schema):
     
     name = fields.Str(required=True)
     image_uri = fields.Str(required=True)
-    supply = fields.Int(allow_none=True)
-    price = fields.Float(required=True)
+    supply = fields.Int(required=True, validate=is_valid_number())
+    price = fields.Float(allow_none=True, validate=is_valid_number())
     type = fields.Str(required=True)
     percent = fields.Float(allow_none=True)
     description = fields.Str(allow_none=True)
@@ -62,12 +63,12 @@ class FormCreateNewCampaign(Schema):
     kol_image_url = fields.Str(allow_none=True)
     image_url = fields.Str(required=True)
     highlight_text = fields.Str(allow_none=True)
-    max_allocation = fields.Int(allow_none=True)
+    max_allocation = fields.Int(allow_none=True, validate=is_valid_number())
     allocation_symbol = fields.Str(allow_none=True)
-    chain_name = fields.Str(required=True, default='BSC')
+    chain_name = fields.Str(required=True, default='')
     chain_currency = fields.Str(required=True)
-    total_supply = fields.Int(required=True) 
-    total_raise = fields.Int(required=True)
+    total_supply = fields.Int(required=True, validate=is_valid_number())
+    total_raise = fields.Float(required=True, validate=is_valid_number())
     start_time = ResDatetimeField(required=True)
     end_time = ResDatetimeField(required=True)
     website_domain = fields.Str(required=True)
