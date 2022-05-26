@@ -26,7 +26,7 @@ from src.models.nft_supply import SupplyNFTModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
-from src.helpers.campaign import check_campaign_subdomain_valid
+from src.helpers.campaign import check_campaign_subdomain_valid, log_any
 import src.workers.campaign as campaign_worker
 from bson import ObjectId
 from lib.logger import Logger
@@ -63,12 +63,14 @@ class CampaignService(object):
         if _check_domain_status_code == 200 and not _check_subdomain_resp['data']['result']:
             raise ExCampaign(f"Submitted subdomain is invalid ! Already existed !")
 
+        log_any("Campaign dict have index_type 1: ", campaign_dict)
+
         _typeIndex = 1
         for _nft in campaign_dict["nft_list"]:
             _nft["index_type"] = _typeIndex
             _typeIndex += 1
 
-        Logger.debug("Campaign dict have index_type : ", campaign_dict)
+        log_any("Campaign dict have index_type 2: ", campaign_dict)
         
         CampaignModel.insert(campaign_dict)
 
