@@ -27,11 +27,11 @@ from src.api import campaign
 from src.services.campaign import CampaignService
 
 
-@lib.handle_res(req_schema=FormCreateNewCampaign, res_schema=CreateNewCampaignResp, login=True)
-def create_new_campaign(wallet, body, *args, **kwargs):
+@lib.handle_res(req_schema=FormCreateNewCampaign, res_schema=CreateNewCampaignResp, login=False)
+def create_new_campaign(body, *args, **kwargs):
     # Load data
-    _user_id = wallet.user
-    # _user_id = 'test_user_id'
+    # _user_id = wallet.user
+    _user_id = 'test_user_id'
     _campaign_info = {
         'user': _user_id,
         'contract': '',
