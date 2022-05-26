@@ -68,6 +68,7 @@ class CampaignService(object):
         _typeIndex = 1
         for _nft in campaign_dict["nft_list"]:
             _nft["index_type"] = _typeIndex
+            _nft["tai"] = _typeIndex
             _typeIndex += 1
 
         log_any("Campaign dict have index_type 2: ", campaign_dict)
