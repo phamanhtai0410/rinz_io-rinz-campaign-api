@@ -60,12 +60,11 @@ class CampaignService(object):
         
         if _check_domain_status_code == 200 and not _check_subdomain_resp['data']['result']:
             raise ExCampaign(f"Submitted subdomain is invalid ! Already existed !")
-        
-        if not campaign_dict["random_nft"]:
-            _typeIndex = 1
-            for _nft in campaign_dict["nft_list"]:
-                _nft["index_type"] = _typeIndex
-                _typeIndex += 1
+
+        _typeIndex = 1
+        for _nft in campaign_dict["nft_list"]:
+            _nft["index_type"] = _typeIndex
+            _typeIndex += 1
 
         print("Campaign dict have index_type : ", campaign_dict)
         
