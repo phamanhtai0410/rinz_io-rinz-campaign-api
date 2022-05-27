@@ -36,7 +36,7 @@ from datetime import datetime, timezone
 class CampaignService(object):
 
     @classmethod
-    def create_campaign(cls, campaign_dict):
+    def đoancreate_campaign(cls, campaign_dict):
         _list_nft = campaign_dict['nft_list']
         
         if campaign_dict["random_nft"]:
@@ -65,11 +65,14 @@ class CampaignService(object):
 
         log_any("Campaign dict have index_type 1: ", campaign_dict)
 
+        _nft_list = []
         _typeIndex = 1
-        for _nft in campaign_dict["nft_list"]:
-            _nft["index_type"] = _typeIndex
-            _nft["tai"] = _typeIndex
+        for item in campaign_dict["nft_list"]:
+            item["index_type"] = _typeIndex
             _typeIndex += 1
+            _nft_list.append(item)
+
+        campaign_dict["nft_list"] = _nft_list
 
         log_any("Campaign dict have index_type 2: ", campaign_dict)
         
