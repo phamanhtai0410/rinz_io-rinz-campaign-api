@@ -160,7 +160,7 @@ class CampaignService(object):
         #       @params: subdomain need to be created
         #       @return: result of creation: True or False and created subdomain 
 
-        _creation_result = campaign_worker.create_domain(
+        _creation_result, _msg = campaign_worker.create_domain(
             campaign_id=campaign_id,
             subdomain=_campaign["website_domain"]
         )
@@ -186,7 +186,7 @@ class CampaignService(object):
                 _campaign_id=campaign_id
             )
 
-        return campaign_id, _creation_result
+        return campaign_id, _creation_result, _msg
 
     @classmethod
     def get_campaign_details_by_subdomain(cls, subdomain):

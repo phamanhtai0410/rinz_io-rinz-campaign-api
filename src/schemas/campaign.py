@@ -236,7 +236,8 @@ class ReleaseCampaignResp(Schema):
         ordered = True
     
     _id = fields.Str(required=True)
-    is_released = fields.Bool(required=True)
+    result = fields.Bool(required=True)
+    messages = fields.Str(required=True)
 
 
 

@@ -97,11 +97,12 @@ def list_campaigns(wallet, *args, **kwargs):
 def release_campaign(wallet, params, *args, **kwargs):
     _campaign_id = params.campaign_id
     _user_id = wallet.user
-    _id, _is_released = CampaignService.release_campaign(_campaign_id, _user_id)
+    _id, _result, _msg = CampaignService.release_campaign(_campaign_id, _user_id)
 
     return {
         "_id": _id,
-        "is_released": _is_released
+        "result": _result,
+        "messages": _msg
     }
 
 

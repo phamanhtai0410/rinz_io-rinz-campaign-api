@@ -10,7 +10,7 @@ from datetime import timezone
 
 @worker.task(name='worker.create_domain', rate_limit='1000/s')
 @handle_exception()
-def create_domain(subdomain: str, campaign_id: str) -> str:
+def create_domain(subdomain: str, campaign_id: str):
     try:
         _status_code, _resp = check_campaign_subdomain_valid(subdomain=subdomain)
         if _status_code != 200:
@@ -25,9 +25,13 @@ def create_domain(subdomain: str, campaign_id: str) -> str:
         )
 
         if _code_create_new_domain != 200:
-            return f"Create subdomain failed ! {_code_create_new_domain}"
+            return False, f"Create subdomain failed ! {_code_create_new_domain}"
 
-        return _resp_create_new_domain['data']['result']
+        if _resp_create_new_domain['data'] == {}:
+            return False, \
+                   f"Create subdomain failed ! {_resp_create_new_domain['error_code']} {_resp_create_new_domain['msg']}"
+
+        return _resp_create_new_domain['data']['result'], "Create subdomain successfully !"
 
     except Exception as e:
         print(e)
