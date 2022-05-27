@@ -93,6 +93,10 @@ class CampaignService(object):
         if _campaign['is_released']:
             raise ExCampaign("This campaign's already released !")
 
+        if 'nft_list' in edit_infos:
+            edit_infos["nft_list"] = [{**x, 'index_type': get(x, 'index_type', idx + 1)} for idx, x in
+                                      enumerate(edit_infos['nft_list'])]
+
         CampaignModel.update_one(
             filter={
                 "_id": ObjectId(campaign_id)
