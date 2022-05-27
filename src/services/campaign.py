@@ -215,4 +215,6 @@ class CampaignService(object):
                                      for y in _current_sells
                                      if x['index_type'] == y['index_type']
                                      ]
+            _campaign["current_sell"] = sum([_c["current_sell"] for _c in _campaign["nft_list"]])
+
         return _campaign
