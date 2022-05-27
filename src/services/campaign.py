@@ -14,6 +14,7 @@
 # File: campaign.py
 # Created at May 17th, 2022
 # Author: taipa
+from pydash import get
 
 """
    Description:
@@ -65,6 +66,8 @@ class CampaignService(object):
             raise ExCampaign(f"Submitted subdomain is invalid ! Already existed !")
 
         Logger.debug("Campaign dict have index_type 1: ", campaign_dict)
+        Logger.debug("Campaign dict have index_type 11: ", _list_nft)
+
         #
         # _typeIndex = 1
         # for item in campaign_dict["nft_list"]:
@@ -109,6 +112,9 @@ class CampaignService(object):
 
         if not _campaign['is_released']:
             raise ExCampaign("This campaign's not a released one !")
+        if 'nft_list' in edit_infos:
+            edit_infos["nft_list"] = [{**x, 'index_type': get(x, 'index_type', idx + 1)} for idx, x in
+                                      enumerate(edit_infos['nft_list'])]
 
         CampaignModel.update_one(
             filter={
