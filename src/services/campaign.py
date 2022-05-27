@@ -38,7 +38,7 @@ class CampaignService(object):
     @classmethod
     def create_campaign(cls, campaign_dict):
         _list_nft = campaign_dict['nft_list']
-        
+
         if campaign_dict["random_nft"]:
 
             _sum_percent = sum([nft['percent'] for nft in _list_nft])
@@ -56,31 +56,34 @@ class CampaignService(object):
             raise ExCampaign('Invalid campaign method !')
 
         # Check if subdomain
-        _check_domain_status_code, _check_subdomain_resp = check_campaign_subdomain_valid(campaign_dict['website_domain'])
+        _check_domain_status_code, _check_subdomain_resp = check_campaign_subdomain_valid(
+            campaign_dict['website_domain'])
         if _check_domain_status_code != 200:
             raise ExCampaign(f"Submitted subdomain error: {_check_subdomain_resp['msg']}")
-        
+
         if _check_domain_status_code == 200 and not _check_subdomain_resp['data']['result']:
             raise ExCampaign(f"Submitted subdomain is invalid ! Already existed !")
 
-        log_any("Campaign dict have index_type 1: ", campaign_dict)
+        Logger.debug("Campaign dict have index_type 1: ", campaign_dict)
+        #
+        # _typeIndex = 1
+        # for item in campaign_dict["nft_list"]:
+        #     item.update({"index_type": _typeIndex})
+        #     _typeIndex += 1
+        # idx start from 0 => idx + 1; ignore 0 = box
+        campaign_dict["nft_list"] = [{**x, 'index_type': idx + 1} for idx, x in enumerate(_list_nft)]
 
-        _typeIndex = 1
-        for item in campaign_dict["nft_list"]:
-            item.update({"index_type": _typeIndex})
-            _typeIndex += 1
+        Logger.debug("Campaign dict have index_type 2: ", campaign_dict)
 
-        log_any("Campaign dict have index_type 2: ", campaign_dict)
-        
         CampaignModel.insert(campaign_dict)
 
         return campaign_dict['name'], campaign_dict['is_released']
 
     @classmethod
     def edit_non_release_campaign(cls, user_id, campaign_id, edit_infos):
-        
+
         _campaign = CampaignModel.get_item(oid=campaign_id)
-        
+
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permission to update this campaign !")
 
@@ -93,14 +96,14 @@ class CampaignService(object):
             },
             obj=edit_infos
         )
-        
+
         return campaign_id, 'success'
 
     @classmethod
     def edit_release_campaign(cls, user_id, campaign_id, edit_infos):
-        
+
         _campaign = CampaignModel.get_item(oid=campaign_id)
-        
+
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permission to update this campaign !")
 
@@ -117,7 +120,8 @@ class CampaignService(object):
         return campaign_id, 'success'
 
     @classmethod
-    def get_list_campaigns(cls, _user_id, page=CampaignGetList.DEFAULT_PAGE, page_size=CampaignGetList.DEFAULT_PAGE_SIZE):
+    def get_list_campaigns(cls, _user_id, page=CampaignGetList.DEFAULT_PAGE,
+                           page_size=CampaignGetList.DEFAULT_PAGE_SIZE):
         _filter = {
             "user": _user_id
         }
@@ -138,10 +142,10 @@ class CampaignService(object):
 
         if _campaign['is_released']:
             raise ExCampaign("This campaign 's already released !")
-        
+
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permissions to release this campaign !")
-        
+
         #    Create subdomain for campaign
         #       @params: subdomain need to be created
         #       @return: result of creation: True or False and created subdomain 
@@ -190,8 +194,5 @@ class CampaignService(object):
         #             "type": ""
         #         }
         #     )
-
-
-
 
         return resp
