@@ -36,7 +36,7 @@ from datetime import datetime, timezone
 class CampaignService(object):
 
     @classmethod
-    def đoancreate_campaign(cls, campaign_dict):
+    def create_campaign(cls, campaign_dict):
         _list_nft = campaign_dict['nft_list']
         
         if campaign_dict["random_nft"]:
