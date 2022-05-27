@@ -27,7 +27,7 @@ from src.models.nft_supply import SupplyNFTModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
-from src.helpers.campaign import check_campaign_subdomain_valid, log_any
+from src.helpers.campaign import check_campaign_subdomain_valid
 import src.workers.campaign as campaign_worker
 from bson import ObjectId
 from lib.logger import Logger
@@ -182,23 +182,33 @@ class CampaignService(object):
                 _campaign_id=campaign_id
             )
 
-            return campaign_id, True
-
-        # return campaign_id, False
+        return campaign_id, _creation_result
 
     @classmethod
     def get_campaign_details_by_subdomain(cls, subdomain):
         # hard code for client build UI
-        resp = CampaignModel.get_item_with(filter={
+
+        _campaign = CampaignModel.get_item_with(filter={
             "website_domain": subdomain
         })
 
-        # for _nft in resp["nft_list"]:
-        #     _supply = SupplyNFTModel.get_item_with(
-        #         filter={
-        #             "contract": resp["contract"],
-        #             "type": ""
-        #         }
-        #     )
+        if _campaign["is_released"]:
+            _supplies = SupplyNFTModel.get_list(
+                filter={
+                    "contract": _campaign["contract"]
+                }
+            )
+            if not _supplies:
+                return _campaign
 
-        return resp
+            _current_sells = [{
+                "index_type": _s["type"],
+                "current_sell": _s["total_supply"]
+            } for _s in _supplies]
+
+            _campaign["nft_list"] = [{**x, **y}
+                                     for x in _campaign["nft_list"]
+                                     for y in _current_sells
+                                     if x['index_type'] == y['index_type']
+                                     ]
+        return _campaign
