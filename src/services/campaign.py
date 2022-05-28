@@ -239,11 +239,13 @@ class CampaignService(object):
                 return _campaign
 
             _campaign["nft_list"] = [{**x, **y}
+                                     if x['index_type'] == y['index_type']
+                                     else {**x, 'current_sell': 0}
                                      for x in _campaign["nft_list"]
                                      for y in _current_sells
-                                     if x['index_type'] == y['index_type']
                                      ]
-            _campaign["current_sell"] = sum([_c["current_sell"] for _c in _campaign["nft_list"]])
+            # print('nft_list : ', [_c["current_sell"] or 0 for _c in _campaign["nft_list"]])
+            _campaign["current_sell"] = sum([_c["current_sell"] if _c["current_sell"] else 0 for _c in _campaign["nft_list"]])
 
         return _campaign
 
