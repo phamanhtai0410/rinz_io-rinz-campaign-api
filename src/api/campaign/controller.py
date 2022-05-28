@@ -113,13 +113,13 @@ def delete_campaign(wallet, params, *args, **kwargs):
     }
 
 
-@lib.handle_res(res_schema=SingleCampaign, login=True)
+@lib.handle_res(res_schema=SingleCampaign, login=False)
 def get_campaign_details(subdomain, *args, **kwargs):
     _details = CampaignService.get_campaign_details_by_subdomain(subdomain)
     return _details or {}
 
 
-@lib.handle_res(req_schema=GetCampaignDetailsByContractReq, res_schema=GetCampaignDetailsByContractRes, login=True)
+@lib.handle_res(req_schema=GetCampaignDetailsByContractReq, res_schema=GetCampaignDetailsByContractRes, login=False)
 def get_campaign_details_by_contract(body, *args, **kwargs):
 
     _details = CampaignService.get_campaign_details_by_contract(body.contract_address)
