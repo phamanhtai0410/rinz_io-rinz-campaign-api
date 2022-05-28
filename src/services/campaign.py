@@ -32,6 +32,7 @@ import src.workers.campaign as campaign_worker
 from bson import ObjectId
 from lib.logger import Logger
 from datetime import datetime, timezone
+from lib.util import dt_utcnow
 
 
 class CampaignService(object):
@@ -86,6 +87,19 @@ class CampaignService(object):
     def edit_non_release_campaign(cls, user_id, campaign_id, edit_infos):
 
         _campaign = CampaignModel.get_item(oid=campaign_id)
+        _list_nft = _campaign['nft_list']
+
+        if _campaign["random_nft"]:
+            _sum_percent = sum([nft['percent'] for nft in _list_nft])
+            if _sum_percent != 100:
+                raise ExCampaign('Invalid Nft List: total percent not valid !')
+        else:
+            _sum_supply = sum([nft['supply'] for nft in _list_nft])
+            _sum_raise = sum([nft['supply'] * nft['price'] for nft in _list_nft])
+            if _sum_supply != _campaign['total_supply']:
+                raise ExCampaign('Invalid Nft List: total supply not valid !')
+            if _sum_raise != _campaign["total_raise"]:
+                raise ExCampaign('Invalid Nft List: total raise not valid !')
 
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permission to update this campaign !")
@@ -189,6 +203,19 @@ class CampaignService(object):
         return campaign_id, _creation_result, _msg
 
     @classmethod
+    def delete_campaign(cls, campaign_id):
+        CampaignModel.update_one(
+            filter={
+                "_id": ObjectId(campaign_id)
+            },
+            obj={
+                "deleted": True,
+                "deleted_time": dt_utcnow
+            }
+        )
+        return True
+
+    @classmethod
     def get_campaign_details_by_subdomain(cls, subdomain):
         # hard code for client build UI
 
@@ -202,13 +229,14 @@ class CampaignService(object):
                     "contract": _campaign["contract"]
                 }
             )
-            if not _supplies:
-                return _campaign
 
             _current_sells = [{
                 "index_type": _s["type"],
                 "current_sell": _s["total_supply"]
             } for _s in _supplies]
+
+            if not _current_sells:
+                return _campaign
 
             _campaign["nft_list"] = [{**x, **y}
                                      for x in _campaign["nft_list"]
@@ -216,5 +244,13 @@ class CampaignService(object):
                                      if x['index_type'] == y['index_type']
                                      ]
             _campaign["current_sell"] = sum([_c["current_sell"] for _c in _campaign["nft_list"]])
+
+        return _campaign
+
+    @classmethod
+    def get_campaign_details_by_contract(cls, contract_address):
+        _campaign = CampaignModel.get_item_with(filter={
+            "contract": contract_address
+        })
 
         return _campaign

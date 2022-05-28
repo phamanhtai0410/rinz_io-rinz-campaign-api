@@ -24,7 +24,7 @@
 from marshmallow import EXCLUDE, INCLUDE, fields, Schema, validate
 from lib.schema.req import ResDatetimeField, ObjectIdField
 from src.enums.campaign import CampaignGetList
-from src.helpers.campaign import is_valid_number
+from src.helpers.campaign import is_valid_number, is_valid_subdomain
 
 
 """
@@ -71,7 +71,7 @@ class FormCreateNewCampaign(Schema):
     total_raise = fields.Float(required=True, validate=is_valid_number)
     start_time = ResDatetimeField(required=True)
     end_time = ResDatetimeField(required=True)
-    website_domain = fields.Str(required=True)
+    website_domain = fields.Str(required=True, validate=is_valid_subdomain)
     social_link = fields.Dict(allow_none=True)
     campaign_method = fields.Int(required=True)
     random_nft = fields.Bool(required=True)
@@ -131,7 +131,6 @@ class FormReleasedCampaignEditor(Schema):
     about_kol = fields.Str(allow_none=True)
     kol_image_url = fields.Str(allow_none=True)
     image_url = fields.Str(allow_none=True)
-    website_domain = fields.Str(allow_none=True)
     social_link = fields.Dict(allow_none=True)
 
 
@@ -240,6 +239,56 @@ class ReleaseCampaignResp(Schema):
     messages = fields.Str(required=True)
 
 
+"""
+    Delete Campaign
+"""
+
+
+class DeleteCampaignParams(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+
+    campaign_id = fields.Str(required=True)
+
+
+class DeleteCampaignRes(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+
+    result = fields.Str(required=True)
+
+
+"""
+    Get campaign details by contract 
+"""
+
+
+class GetCampaignDetailsByContractReq(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+
+    contract_address = fields.Str(required=True)
+
+
+class GetCampaignDetailsByContractRes(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        ordered = True
+
+    name = fields.Str(required=True)
+    image_url = fields.Str(required=True)
+    total_supply = fields.Int(required=True)
+    current_sell = fields.Int(allow_none=True, missing=0)
+    start_time = ResDatetimeField(required=True)
+    end_time = ResDatetimeField(required=True)
+    social_link = fields.Dict(allow_none=True)
+    random_nft = fields.Bool(required=True)
+    contract = fields.Str(required=True)
+    is_released = fields.Bool(required=True)
+    description = fields.List(fields.Nested(CampaignDescription()), missing=[])
 
 
 

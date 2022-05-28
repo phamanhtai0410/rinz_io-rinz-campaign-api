@@ -6,6 +6,7 @@ import json
 import traceback
 import requests
 from src.config import DefaultConfig
+import re
 
 
 def log_any(x, *args, **kwargs):
@@ -92,4 +93,6 @@ def is_valid_number(_number) -> bool:
     return True
 
 
-
+def is_valid_subdomain(_subdomain: str) -> bool:
+    pattern = "[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])"
+    return bool(re.match(pattern, _subdomain))

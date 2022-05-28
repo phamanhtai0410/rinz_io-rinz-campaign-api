@@ -28,7 +28,7 @@ rest_campaign.add_url_rule('edit_released', methods=['POST'], view_func=edit_rel
 
 rest_campaign.add_url_rule('release', methods=['GET'], view_func=release_campaign)
 
-
+rest_campaign.add_url_rule('delete', methods=['POST'], view_func=delete_campaign)
 
 """
         API for KOL Marketplace:
@@ -36,3 +36,10 @@ rest_campaign.add_url_rule('release', methods=['GET'], view_func=release_campaig
 """
 
 rest_campaign.add_url_rule('get_details', methods=['GET'], view_func=get_campaign_details)
+
+"""
+        API for Market Details:
+        Information of campaign by contract_address
+"""
+
+rest_campaign.add_url_rule('get_details', methods=['POST'], view_func=get_campaign_details_by_contract)

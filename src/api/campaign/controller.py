@@ -80,7 +80,7 @@ def edit_released_campaign(wallet, body, *args, **kwargs):
     }
 
 
-@lib.handle_res(param_schema=GetListCampaignParams,res_schema=GetListCampaignsResp)
+@lib.handle_res(param_schema=GetListCampaignParams, res_schema=GetListCampaignsResp)
 def list_campaigns(wallet, *args, **kwargs):
 
     _user_id = wallet.user
@@ -106,9 +106,21 @@ def release_campaign(wallet, params, *args, **kwargs):
     }
 
 
-@lib.handle_res(res_schema=SingleCampaign, login=False)
+@lib.handle_res(param_schema=DeleteCampaignParams, res_schema=DeleteCampaignRes)
+def delete_campaign(wallet, params, *args, **kwargs):
+    return {
+        "result": CampaignService.delete_campaign(params.campaign_id)
+    }
+
+
+@lib.handle_res(res_schema=SingleCampaign, login=True)
 def get_campaign_details(subdomain, *args, **kwargs):
-    print(subdomain)
-    # Hardcode Campaign for client get info of page Campaign Details
     _details = CampaignService.get_campaign_details_by_subdomain(subdomain)
+    return _details or {}
+
+
+@lib.handle_res(req_schema=GetCampaignDetailsByContractReq, res_schema=GetCampaignDetailsByContractRes, login=True)
+def get_campaign_details_by_contract(body, *args, **kwargs):
+
+    _details = CampaignService.get_campaign_details_by_contract(body.contract_address)
     return _details or {}
