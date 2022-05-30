@@ -53,7 +53,8 @@ def create_campaign_smc(_campaign_dict, _campaign_id, *args, **kwargs):
         "market_address": DefaultConfig.RINZ_MARKET_ADDRESS,
         "factory_address": DefaultConfig.RINZ_CAMPAIGN_FACTORY_ADDRESS,
         "token_address": DefaultConfig.RINZ_COIN_TOKEN_ADDRESS,
-        "is_fixed_token": _campaign_dict["is_fixed_token"] if _campaign_dict["is_fixed_token"] else False
+        "is_fixed_token": _campaign_dict["is_fixed_token"] if _campaign_dict["is_fixed_token"] else False,
+        "name": _campaign_dict["name"]
     }
 
     print("worker : ", _payload)
