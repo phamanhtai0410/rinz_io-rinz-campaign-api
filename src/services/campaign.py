@@ -88,18 +88,20 @@ class CampaignService(object):
     def edit_non_release_campaign(cls, user_id, campaign_id, edit_infos):
 
         _campaign = CampaignModel.get_item(oid=campaign_id)
-        _list_nft = _campaign['nft_list']
+        # if 'nft_list' in edit_infos:
+        _list_nft = edit_infos['nft_list']
 
-        if _campaign["random_nft"]:
+        if edit_infos["random_nft"]:
             _sum_percent = sum([nft['percent'] for nft in _list_nft])
             if _sum_percent != 100:
                 raise ExCampaign('Invalid Nft List: total percent not valid !')
         else:
             _sum_supply = sum([nft['supply'] for nft in _list_nft])
             _sum_raise = sum([nft['supply'] * nft['price'] for nft in _list_nft])
-            if _sum_supply != _campaign['total_supply']:
+            print('sum raise = ', _sum_raise)
+            if _sum_supply != edit_infos['total_supply']:
                 raise ExCampaign('Invalid Nft List: total supply not valid !')
-            if _sum_raise != _campaign["total_raise"]:
+            if _sum_raise != edit_infos["total_raise"]:
                 raise ExCampaign('Invalid Nft List: total raise not valid !')
 
         if _campaign['user'] != user_id:

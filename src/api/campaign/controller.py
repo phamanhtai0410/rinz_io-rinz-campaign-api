@@ -50,9 +50,10 @@ def create_new_campaign(wallet, body, *args, **kwargs):
     }
 
 
-@lib.handle_res(req_schema=FormNonReleasedCampaignEditor, res_schema=CampaignEditorResp)
+@lib.handle_res(req_schema=FormNonReleasedCampaignEditor, res_schema=CampaignEditorResp, login=True)
 def edit_non_released_campaign(wallet, body, *args, **kwargs):
     _user_id = wallet.user
+    # _user_id = '62767fa500f8f9069bef877d'
     _campaign_id = body._id
     _edit_infos = body.__dict__
     del _edit_infos["_id"]
