@@ -24,6 +24,7 @@ from pydash import get
 import json
 from src.models.campaign import CampaignModel
 from src.models.nft_supply import SupplyNFTModel
+from src.models.user import UserModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
@@ -238,14 +239,21 @@ class CampaignService(object):
             if not _current_sells:
                 return _campaign
 
-            _campaign["nft_list"] = [{**x, **y}
-                                     if x['index_type'] == y['index_type']
-                                     else {**x, 'current_sell': 0}
-                                     for x in _campaign["nft_list"]
-                                     for y in _current_sells
-                                     ]
-            # print('nft_list : ', [_c["current_sell"] or 0 for _c in _campaign["nft_list"]])
-            _campaign["current_sell"] = sum([_c["current_sell"] if _c["current_sell"] else 0 for _c in _campaign["nft_list"]])
+            _nft_list = []
+            for x in _campaign["nft_list"]:
+                is_match = False
+                for y in _current_sells:
+                    if x['index_type'] == y['index_type']:
+                        is_match = True
+                        _nft_list.append({**x, **y})
+                if not is_match:
+                    _nft_list.append({**x, "current_sell": 0})
+
+            _campaign["nft_list"] = _nft_list
+
+            print('nft_list : ', [_c["current_sell"] or 0 for _c in _campaign["nft_list"]])
+
+            _campaign["current_sell"] = sum([_c["current_sell"] for _c in _nft_list])
 
         return _campaign
 
@@ -255,4 +263,17 @@ class CampaignService(object):
             "contract": contract_address
         })
 
-        return _campaign
+        _user = UserModel.get_item(oid=_campaign["user"])
+
+        del _campaign["user"]
+
+        _resp = {
+            **_campaign,
+            "user_infos": {
+                "username": _user["username"],
+                "avatar": _user["avatar"],
+                "public_address": _user["public_address"]
+            }
+        }
+
+        return _resp

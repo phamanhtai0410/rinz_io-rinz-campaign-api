@@ -289,6 +289,8 @@ class GetCampaignDetailsByContractRes(Schema):
     contract = fields.Str(required=True)
     is_released = fields.Bool(required=True)
     description = fields.List(fields.Nested(CampaignDescription()), missing=[])
+    user_infos = fields.Dict(required=True, default={})
+
 
 
 
