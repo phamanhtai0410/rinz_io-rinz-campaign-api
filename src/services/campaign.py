@@ -282,3 +282,18 @@ class CampaignService(object):
         }
 
         return _resp
+
+    @classmethod
+    def get_hot_campaigns(cls, page=CampaignGetList.DEFAULT_HOT_PAGE,
+                          page_size=CampaignGetList.DEFAULT_HOT_PAGE_SIZE):
+        _campaigns = CampaignModel.get_list(
+            filter={
+                "is_hot": True
+            },
+            page_size=page_size,
+            page=page
+        )
+        return {
+            "campaigns": _campaigns
+        }
+

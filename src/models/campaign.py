@@ -46,3 +46,6 @@ class CampaignModel(BaseMG):
     about_kol = fields.CharField(blank=True, default='')
     kol_image_url = fields.CharField(blank=True, default='')
 
+    # flag for filter
+    is_hot = fields.BooleanField(blank=True, default=False)
+

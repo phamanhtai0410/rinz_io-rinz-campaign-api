@@ -43,3 +43,13 @@ rest_campaign.add_url_rule('get_details', methods=['GET'], view_func=get_campaig
 """
 
 rest_campaign.add_url_rule('get_details', methods=['POST'], view_func=get_campaign_details_by_contract)
+
+
+"""
+    API for homepage
+    Get list hot campaigns
+"""
+
+
+rest_campaign.add_url_rule('get_hot_campaigns', methods=['GET'], view_func=get_hot_campaigns)
+

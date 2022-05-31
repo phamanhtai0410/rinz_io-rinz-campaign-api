@@ -205,6 +205,8 @@ class SingleCampaign(Schema):
     about_kol = fields.Str(missing='')
     kol_image_url = fields.Str(missing='')
 
+    is_hot = fields.Bool(allow_none=True, missing=False)
+
 
 class GetListCampaignsResp(Schema):
     class Meta:
@@ -292,6 +294,21 @@ class GetCampaignDetailsByContractRes(Schema):
     description = fields.List(fields.Nested(CampaignDescription()), missing=[])
     user_infos = fields.Dict(required=True, default={})
     nft_infos = fields.Dict(required=True, default={})
+
+
+"""
+    Get hot campaign list
+"""
+
+
+class GetHotCampaignsList(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        ordered = True
+
+    campaigns = fields.List(fields.Nested(SingleCampaign()))
+
+
 
 
 

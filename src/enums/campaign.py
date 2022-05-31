@@ -14,6 +14,9 @@ class CampaignMethod(object):
     KOL_WALLET = 0
     RINZ_WALLET = 1
 
+
 class CampaignGetList(object):
     DEFAULT_PAGE = 1
     DEFAULT_PAGE_SIZE = 10
+    DEFAULT_HOT_PAGE = 1
+    DEFAULT_HOT_PAGE_SIZE = 3

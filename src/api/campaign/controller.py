@@ -125,3 +125,11 @@ def get_campaign_details_by_contract(body, *args, **kwargs):
 
     _details = CampaignService.get_campaign_details_by_contract(body.contract_address, body.index_type)
     return _details or {}
+
+
+@lib.handle_res(res_schema=GetHotCampaignsList, login=False)
+def get_hot_campaigns(*args, **kwargs):
+
+    _details = CampaignService.get_hot_campaigns()
+    return _details or {}
+
