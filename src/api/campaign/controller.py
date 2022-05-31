@@ -123,5 +123,5 @@ def get_campaign_details(subdomain, *args, **kwargs):
 @lib.handle_res(req_schema=GetCampaignDetailsByContractReq, res_schema=GetCampaignDetailsByContractRes, login=False)
 def get_campaign_details_by_contract(body, *args, **kwargs):
 
-    _details = CampaignService.get_campaign_details_by_contract(body.contract_address)
+    _details = CampaignService.get_campaign_details_by_contract(body.contract_address, body.index_type)
     return _details or {}

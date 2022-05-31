@@ -271,6 +271,7 @@ class GetCampaignDetailsByContractReq(Schema):
         ordered = True
 
     contract_address = fields.Str(required=True)
+    index_type = fields.Int(required=True)
 
 
 class GetCampaignDetailsByContractRes(Schema):
@@ -290,6 +291,7 @@ class GetCampaignDetailsByContractRes(Schema):
     is_released = fields.Bool(required=True)
     description = fields.List(fields.Nested(CampaignDescription()), missing=[])
     user_infos = fields.Dict(required=True, default={})
+    nft_infos = fields.Dict(required=True, default={})
 
 
 

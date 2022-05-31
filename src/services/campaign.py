@@ -260,7 +260,7 @@ class CampaignService(object):
         return _campaign
 
     @classmethod
-    def get_campaign_details_by_contract(cls, contract_address):
+    def get_campaign_details_by_contract(cls, contract_address, index_type):
         _campaign = CampaignModel.get_item_with(filter={
             "contract": contract_address
         })
@@ -269,13 +269,16 @@ class CampaignService(object):
 
         del _campaign["user"]
 
+        _nft_infos = [_nft for _nft in _campaign["nft_list"] if _nft["index_type"] == index_type][0]
+
         _resp = {
             **_campaign,
             "user_infos": {
                 "username": _user["username"],
                 "avatar": _user["avatar"],
                 "public_address": _user["public_address"]
-            }
+            },
+            "nft_infos": _nft_infos
         }
 
         return _resp
