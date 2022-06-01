@@ -91,6 +91,9 @@ class CampaignService(object):
         # if 'nft_list' in edit_infos:
         _list_nft = edit_infos['nft_list']
 
+        if _campaign["deleted"]:
+            raise ExCampaign("This campaign's already been deleted !")
+
         if edit_infos["random_nft"]:
             _sum_percent = sum([nft['percent'] for nft in _list_nft])
             if _sum_percent != 100:
@@ -150,7 +153,8 @@ class CampaignService(object):
     def get_list_campaigns(cls, _user_id, page=CampaignGetList.DEFAULT_PAGE,
                            page_size=CampaignGetList.DEFAULT_PAGE_SIZE):
         _filter = {
-            "user": _user_id
+            "user": _user_id,
+            "deleted": False
         }
 
         _total = CampaignModel.get_count(
@@ -173,6 +177,8 @@ class CampaignService(object):
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permissions to release this campaign !")
 
+        if _campaign["deleted"]:
+            raise ExCampaign("This campaign's already been deleted !")
         #    Create subdomain for campaign
         #       @params: subdomain need to be created
         #       @return: result of creation: True or False and created subdomain 
@@ -206,7 +212,16 @@ class CampaignService(object):
         return campaign_id, _creation_result, _msg
 
     @classmethod
-    def delete_campaign(cls, campaign_id):
+    def delete_campaign(cls, campaign_id, user_id):
+
+        _campaign = CampaignModel.get_item(oid=campaign_id)
+
+        if _campaign["deleted"]:
+            raise ExCampaign("This campaign's already been deleted !")
+
+        if _campaign["user"] != user_id:
+            raise ExCampaign("Not have permissions to delete this campaign !")
+
         CampaignModel.update_one(
             filter={
                 "_id": ObjectId(campaign_id)
@@ -223,7 +238,8 @@ class CampaignService(object):
         # hard code for client build UI
 
         _campaign = CampaignModel.get_item_with(filter={
-            "website_domain": subdomain
+            "website_domain": subdomain,
+            "deleted": False
         })
 
         if _campaign["is_released"]:
@@ -288,7 +304,8 @@ class CampaignService(object):
                           page_size=CampaignGetList.DEFAULT_HOT_PAGE_SIZE):
         _campaigns = CampaignModel.get_list(
             filter={
-                "is_hot": True
+                "is_hot": True,
+                "deleted": False
             },
             page_size=page_size,
             page=page

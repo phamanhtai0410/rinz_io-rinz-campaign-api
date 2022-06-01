@@ -246,7 +246,7 @@ class ReleaseCampaignResp(Schema):
 """
 
 
-class DeleteCampaignParams(Schema):
+class DeleteCampaignReq(Schema):
     class Meta:
         unknown = INCLUDE
         ordered = True
