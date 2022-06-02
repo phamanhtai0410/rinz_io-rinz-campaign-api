@@ -131,9 +131,9 @@ def get_nft_details(body, *args, **kwargs):
     return _details or {}
 
 
-@lib.handle_res(param_schema=GetCampaignDetailsByIdParams, res_schema=SingleCampaign)
-def get_campaign_details_admin(params, *args, **kwargs):
-    _details = CampaignService.get_campaign_details_by_id(params.campaign_id)
+@lib.handle_res(res_schema=SingleCampaign)
+def get_campaign_details_admin(campaign_id, *args, **kwargs):
+    _details = CampaignService.get_campaign_details_by_id(campaign_id)
     return _details or {}
 
 

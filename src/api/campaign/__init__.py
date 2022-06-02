@@ -51,7 +51,7 @@ rest_campaign.add_url_rule('nft_details', methods=['POST'], view_func=get_nft_de
     query by campaign_id
 """
 
-rest_campaign.add_url_rule('admin/details', methods=['GET'], view_func=get_campaign_details_admin)
+rest_campaign.add_url_rule('admin/details/<campaign_id>', methods=['GET'], view_func=get_campaign_details_admin)
 
 
 """

@@ -180,7 +180,7 @@ class SingleCampaign(Schema):
         unknown = EXCLUDE
         ordered = True
 
-    _id = ObjectIdField(required=True)
+    # _id = ObjectIdField(required=True)
     name = fields.Str(required=True)
     image_url = fields.Str(required=True)
     highlight_text = fields.Str(allow_none=True)
