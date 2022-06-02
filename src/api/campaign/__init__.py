@@ -31,18 +31,27 @@ rest_campaign.add_url_rule('release', methods=['GET'], view_func=release_campaig
 rest_campaign.add_url_rule('delete', methods=['POST'], view_func=delete_campaign)
 
 """
-        API for KOL Marketplace:
-        + Get information of campaign for page details:
+        API for KOL Marketplace (Admin Site):
+        + Get information of campaign for page details: by subdomain in headers
+        API for Launchpad Page:
+        + Get information for page detail of campaign: by campaign_id in query
 """
 
-rest_campaign.add_url_rule('get_details', methods=['GET'], view_func=get_campaign_details)
+rest_campaign.add_url_rule('details', methods=['GET'], view_func=get_campaign_details)
 
 """
         API for Market Details:
         Information of campaign by contract_address
 """
 
-rest_campaign.add_url_rule('get_details', methods=['POST'], view_func=get_campaign_details_by_contract)
+rest_campaign.add_url_rule('nft_details', methods=['POST'], view_func=get_nft_details)
+
+"""
+    API for campaign details of admin page for Edit page
+    query by campaign_id
+"""
+
+rest_campaign.add_url_rule('admin/details', methods=['GET'], view_func=get_campaign_details_admin)
 
 
 """
@@ -52,4 +61,3 @@ rest_campaign.add_url_rule('get_details', methods=['POST'], view_func=get_campai
 
 
 rest_campaign.add_url_rule('get_hot_campaigns', methods=['GET'], view_func=get_hot_campaigns)
-

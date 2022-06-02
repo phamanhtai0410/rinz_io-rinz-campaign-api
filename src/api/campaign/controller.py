@@ -115,16 +115,25 @@ def delete_campaign(wallet, body, *args, **kwargs):
     }
 
 
-@lib.handle_res(res_schema=SingleCampaign, login=False)
-def get_campaign_details(subdomain, *args, **kwargs):
-    _details = CampaignService.get_campaign_details_by_subdomain(subdomain)
+@lib.handle_res(param_schema=GetCampaignDetailsByIdParams, res_schema=SingleCampaign, login=False)
+def get_campaign_details(subdomain, params, *args, **kwargs):
+    if subdomain:
+        _details = CampaignService.get_campaign_details_by_subdomain(subdomain)
+    else:
+        _details = CampaignService.get_campaign_details_by_id(params.campaign_id)
     return _details or {}
 
 
 @lib.handle_res(req_schema=GetCampaignDetailsByContractReq, res_schema=GetCampaignDetailsByContractRes, login=False)
-def get_campaign_details_by_contract(body, *args, **kwargs):
+def get_nft_details(body, *args, **kwargs):
 
-    _details = CampaignService.get_campaign_details_by_contract(body.contract_address, body.index_type)
+    _details = CampaignService.get_nft_type_details(body.contract_address, body.index_type)
+    return _details or {}
+
+
+@lib.handle_res(param_schema=GetCampaignDetailsByIdParams, res_schema=SingleCampaign)
+def get_campaign_details_admin(params, *args, **kwargs):
+    _details = CampaignService.get_campaign_details_by_id(params.campaign_id)
     return _details or {}
 
 

@@ -256,14 +256,27 @@ class DeleteCampaignReq(Schema):
 
 class DeleteCampaignRes(Schema):
     class Meta:
-        unknown = INCLUDE
+        unknown = EXCLUDE
         ordered = True
 
     result = fields.Str(required=True)
 
 
 """
-    Get campaign details by contract 
+    Get campaign details by campaign_id
+"""
+
+
+class GetCampaignDetailsByIdParams(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+        
+    campaign_id = fields.Str(allow_none=True, default='')
+
+
+"""
+    Get campaign details by contract
 """
 
 
