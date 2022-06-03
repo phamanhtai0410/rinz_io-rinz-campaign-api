@@ -259,7 +259,7 @@ class DeleteCampaignRes(Schema):
         unknown = EXCLUDE
         ordered = True
 
-    result = fields.Str(required=True)
+    result = fields.Bool(required=True)
 
 
 """

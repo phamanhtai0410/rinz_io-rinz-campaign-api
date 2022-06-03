@@ -229,7 +229,7 @@ class CampaignService(object):
             },
             obj={
                 "deleted": True,
-                "deleted_time": dt_utcnow
+                "deleted_time": dt_utcnow()
             }
         )
         return True
