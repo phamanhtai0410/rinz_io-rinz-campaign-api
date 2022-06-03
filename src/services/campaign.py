@@ -279,7 +279,6 @@ class CampaignService(object):
     @classmethod
     def get_campaign_details_by_id(cls, campaign_id):
         _campaign = CampaignModel.get_item(oid=campaign_id)
-        del _campaign["_id"]
         return _campaign
 
     @classmethod
