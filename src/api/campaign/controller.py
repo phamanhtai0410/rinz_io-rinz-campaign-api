@@ -107,7 +107,7 @@ def release_campaign(wallet, params, *args, **kwargs):
     }
 
 
-@lib.handle_res(param_schema=DeleteCampaignReq, res_schema=DeleteCampaignRes)
+@lib.handle_res(req_schema=DeleteCampaignReq, res_schema=DeleteCampaignRes)
 def delete_campaign(wallet, body, *args, **kwargs):
     _user_id = wallet.user
     return {
