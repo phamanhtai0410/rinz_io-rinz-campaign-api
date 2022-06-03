@@ -20,3 +20,5 @@ class CampaignGetList(object):
     DEFAULT_PAGE_SIZE = 10
     DEFAULT_HOT_PAGE = 1
     DEFAULT_HOT_PAGE_SIZE = 3
+
+

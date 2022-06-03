@@ -59,5 +59,5 @@ rest_campaign.add_url_rule('admin/details/<campaign_id>', methods=['GET'], view_
     Get list hot campaigns
 """
 
+rest_campaign.add_url_rule('hot', methods=['GET'], view_func=get_hot_campaigns)
 
-rest_campaign.add_url_rule('get_hot_campaigns', methods=['GET'], view_func=get_hot_campaigns)

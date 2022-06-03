@@ -314,6 +314,14 @@ class GetCampaignDetailsByContractRes(Schema):
 """
 
 
+class GetHotCampaignsParams(Schema):
+    class Meta:
+        unknown = INCLUDE
+        ordered = True
+
+    category = fields.Str(allow_none=True, default="")
+
+
 class GetHotCampaignsList(Schema):
     class Meta:
         unknown = EXCLUDE

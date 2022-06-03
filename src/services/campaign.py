@@ -34,6 +34,7 @@ from bson import ObjectId
 from lib.logger import Logger
 from datetime import datetime, timezone
 from lib.util import dt_utcnow
+from src.constants import AppConstants
 
 
 class CampaignService(object):
@@ -306,16 +307,46 @@ class CampaignService(object):
         return _resp
 
     @classmethod
-    def get_hot_campaigns(cls, page=CampaignGetList.DEFAULT_HOT_PAGE,
+    def get_hot_campaigns(cls, category, page=CampaignGetList.DEFAULT_HOT_PAGE,
                           page_size=CampaignGetList.DEFAULT_HOT_PAGE_SIZE):
-        _campaigns = CampaignModel.get_list(
-            filter={
+
+        if category not in AppConstants.HotCampaignCategories:
+            raise ExCampaign("Invalid category of hot campaign !")
+
+        _filter = [
+            {
                 "is_hot": True,
-                "deleted": False
-            },
+                "deleted": False,
+            }, {
+                "is_hot": True,
+                "deleted": False,
+                "start_time": {
+                    "$gt": datetime.now()
+                }
+            }, {
+                "is_hot": True,
+                "deleted": False,
+                "start_time": {
+                    "$lt": datetime.now()
+                },
+                "end_time": {
+                    "$gt": datetime.now()
+                }
+            }, {
+                "is_hot": True,
+                "deleted": False,
+                "end_time": {
+                    "$lt": datetime.now()
+                }
+            }
+        ]
+
+        _campaigns = CampaignModel.get_list(
+            filter=_filter[AppConstants.HotCampaignCategories.index(category)],
             page_size=page_size,
             page=page
         )
+
         return {
             "campaigns": _campaigns
         }

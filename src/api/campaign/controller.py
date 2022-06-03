@@ -137,9 +137,8 @@ def get_campaign_details_admin(campaign_id, *args, **kwargs):
     return _details or {}
 
 
-@lib.handle_res(res_schema=GetHotCampaignsList, login=False)
-def get_hot_campaigns(*args, **kwargs):
-
-    _details = CampaignService.get_hot_campaigns()
+@lib.handle_res(param_schema=GetHotCampaignsParams, res_schema=GetHotCampaignsList, login=False)
+def get_hot_campaigns(params, *args, **kwargs):
+    _details = CampaignService.get_hot_campaigns(params.category)
     return _details or {}
 

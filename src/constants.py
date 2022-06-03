@@ -24,5 +24,6 @@ class AppConstants(object):
     EditNonReleasedCampaignFields = [
 
     ]
-    
+
+    HotCampaignCategories = ["", "up_coming", "on_going", "completed"]
     pass
