@@ -45,14 +45,17 @@ class CampaignService(object):
 
         if campaign_dict["random_nft"]:
 
-            _sum_percent = sum([nft['percent'] for nft in _list_nft])
+            _sum_percent = sum([nft['percent'] if 'percent' in nft else 0 for nft in _list_nft])
+
             if _sum_percent != 100:
                 raise ExCampaign('Invalid Nft List: total percent not valid !')
         else:
             _sum_supply = sum([nft['supply'] for nft in _list_nft])
             _sum_raise = sum([nft['supply'] * nft['price'] for nft in _list_nft])
+
             if _sum_supply != campaign_dict['total_supply']:
                 raise ExCampaign('Invalid Nft List: total supply not valid !')
+
             if _sum_raise != campaign_dict["total_raise"]:
                 raise ExCampaign('Invalid Nft List: total raise not valid !')
 
@@ -62,21 +65,16 @@ class CampaignService(object):
         # Check if subdomain
         _check_domain_status_code, _check_subdomain_resp = check_campaign_subdomain_valid(
             campaign_dict['website_domain'])
+
         if _check_domain_status_code != 200:
             raise ExCampaign(f"Submitted subdomain error: {_check_subdomain_resp['msg']}")
 
         if _check_domain_status_code == 200 and not _check_subdomain_resp['data']['result']:
             raise ExCampaign(f"Submitted subdomain is invalid ! Already existed !")
 
-        Logger.debug("Campaign dict have index_type 1: ", campaign_dict)
-        Logger.debug("Campaign dict have index_type 11: ", _list_nft)
+        Logger.debug("*** Campaign dict : ", campaign_dict)
+        Logger.debug("*** Campaign dict - nft list: ", _list_nft)
 
-        #
-        # _typeIndex = 1
-        # for item in campaign_dict["nft_list"]:
-        #     item.update({"index_type": _typeIndex})
-        #     _typeIndex += 1
-        # idx start from 0 => idx + 1; ignore 0 = box
         campaign_dict["nft_list"] = [{**x, 'index_type': idx + 1} for idx, x in enumerate(_list_nft)]
 
         Logger.debug("Campaign dict have index_type 2: ", campaign_dict)
@@ -216,6 +214,9 @@ class CampaignService(object):
     def delete_campaign(cls, campaign_id, user_id):
 
         _campaign = CampaignModel.get_item(oid=campaign_id)
+
+        if not _campaign:
+            raise ExCampaign("Campaign's not exist !")
 
         if _campaign["deleted"]:
             raise ExCampaign("This campaign's already been deleted !")
