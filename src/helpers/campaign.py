@@ -7,6 +7,7 @@ import traceback
 import requests
 from src.config import DefaultConfig
 import re
+from marshmallow import ValidationError
 
 
 def log_any(x, *args, **kwargs):
@@ -89,7 +90,9 @@ def create_new_subdomain(subdomain, campaign_id):
 
 def is_valid_number(_number) -> bool:
     if _number < 0:
-        return False
+        raise ValidationError("Number in this field cannot be negative !")
+    if _number > 2 ** 63 - 1:
+        raise ValidationError("Number in this field is out of range !")
     return True
 
 
