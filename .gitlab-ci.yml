@@ -6,7 +6,7 @@ variables:
   CONTAINER_REPO_ASIA_STAG: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-staging-ecr/campaign-api
   CONTAINER_REPO_ASIA_PROD: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-production-ecr/campaign-api
   NAMESPACE_STAG: api-stag
-  NAMESPACE_PROD: rinz-api-prod
+  NAMESPACE_PROD: rinz-api
   FULLREPO_ASIA_STAG: $CONTAINER_REPO_ASIA_STAG:$CI_COMMIT_SHORT_SHA
   FULLREPO_ASIA_PROD: $CONTAINER_REPO_ASIA_PROD:$CI_COMMIT_SHORT_SHA
   ENV_STAGING: $ENV_STAGING
