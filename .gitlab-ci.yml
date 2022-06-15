@@ -2,7 +2,6 @@ variables:
   REGION: asia-southeast1
   IMAGE_NAME: rinz-campaign-api
   IMAGE_NAME_WORKER: rinz-campaign-api-worker
-
   CONTAINER_REPO_ASIA_STAG: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-staging-ecr/campaign-api
   CONTAINER_REPO_ASIA_PROD: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-production-ecr/campaign-api
   NAMESPACE_STAG: api-stag
