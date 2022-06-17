@@ -198,7 +198,7 @@ class SingleCampaign(Schema):
     campaign_method = fields.Int(required=True)
     random_nft = fields.Bool(required=True)
     nft_list = fields.List(fields.Nested(NftOfCampaignResp()))
-    user_infos = fields.Dict(required=True, default={})
+    user_infos = fields.Dict(required=False, mising={})
 
     contract = fields.Str(required=True)
     is_released = fields.Bool(required=True)
