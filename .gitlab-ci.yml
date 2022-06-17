@@ -2,18 +2,17 @@ variables:
   REGION: asia-southeast1
   IMAGE_NAME: rinz-campaign-api
   IMAGE_NAME_WORKER: rinz-campaign-api-worker
-
   CONTAINER_REPO_ASIA_STAG: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-staging-ecr/campaign-api
   CONTAINER_REPO_ASIA_PROD: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-production-ecr/campaign-api
   NAMESPACE_STAG: api-stag
-  NAMESPACE_PROD: rinz-api-prod
+  NAMESPACE_PROD: rinz-api
   FULLREPO_ASIA_STAG: $CONTAINER_REPO_ASIA_STAG:$CI_COMMIT_SHORT_SHA
   FULLREPO_ASIA_PROD: $CONTAINER_REPO_ASIA_PROD:$CI_COMMIT_SHORT_SHA
   ENV_STAGING: $ENV_STAGING
   ENV_PRODUCTION: $ENV_PRODUCTION
 
   HELM_VALUE: ${CI_COMMIT_REF_NAME}
-  HELM_VERSION: 2.4.3
+  HELM_VERSION: 2.4.6
   AWS_REGION: ap-southeast-1
   GITLAB_TOKEN: $GITLAB_RUNNER_TOKEN
   DOCKER_DRIVER: overlay
@@ -59,7 +58,6 @@ build_stag:
     - export VERIFY_CHECKSUM=false && curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod +x ./get_helm.sh && ./get_helm.sh
     - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.38.0/skaffold-linux-amd64 && chmod +x skaffold &&  mv skaffold /usr/local/bin
   script:
-    - cp $ENV_STAGING .env
     - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $CONTAINER_REPO_ASIA_STAG
     - |
       if [ "$CI_COMMIT_REF_NAME" == "stag" ]; then
@@ -137,7 +135,6 @@ build_prod:
     - export VERIFY_CHECKSUM=false && curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod +x ./get_helm.sh && ./get_helm.sh
     - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.38.0/skaffold-linux-amd64 && chmod +x skaffold &&  mv skaffold /usr/local/bin
   script:
-    - cp $ENV_PRODUCTION .env
     - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $CONTAINER_REPO_ASIA_PROD
     - |
       if [ "$CI_COMMIT_REF_NAME" == "master" ]; then
