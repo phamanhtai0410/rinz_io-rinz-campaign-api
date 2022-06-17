@@ -282,6 +282,18 @@ class CampaignService(object):
     @classmethod
     def get_campaign_details_by_id(cls, campaign_id):
         _campaign = CampaignModel.get_item(oid=campaign_id)
+
+        if _campaign:
+            _user = UserModel.get_item(oid=_campaign["user"])
+            del _campaign["user"]
+            _campaign = {
+                **_campaign,
+                "user_infos": {
+                    "username": _user["username"],
+                    "avatar": _user["avatar"],
+                    "public_address": _user["public_address"]
+                }
+            }
         return _campaign
 
     @classmethod
