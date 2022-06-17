@@ -28,7 +28,7 @@ from src.models.user import UserModel
 from src.exceptions.campaign import ExCampaign
 from src.constants import AppConstants
 from src.enums.campaign import CampaignGetList
-from src.helpers.campaign import check_campaign_subdomain_valid
+from src.helpers.campaign import check_campaign_subdomain_valid, delete_subdomain
 import src.workers.campaign as campaign_worker
 from bson import ObjectId
 from lib.logger import Logger
@@ -223,6 +223,8 @@ class CampaignService(object):
 
         if _campaign["user"] != user_id:
             raise ExCampaign("Not have permissions to delete this campaign !")
+
+        delete_subdomain(subdomain=campaign_id["website_domain"])
 
         CampaignModel.update_one(
             filter={

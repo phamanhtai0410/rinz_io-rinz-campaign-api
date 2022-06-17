@@ -56,6 +56,31 @@ def check_campaign_subdomain_valid(subdomain, campaign_id=None):
 
 
 """
+    Function: Call IAPI service to delete the submitted subdomain for campaign is valid or not
+    @params: subdomain <string>
+    @params: campaign_id <string>
+    @return: API return
+"""
+
+
+def delete_subdomain(subdomain):
+    try:
+        _payload = {
+            "domain": subdomain
+        }
+
+        resp = requests.delete('{}/domain'.format(DefaultConfig.IAPI_URL),
+                               json=_payload,
+                               verify=False,
+                               timeout=5)
+        log_any(f'Call IAPI service delete domain {subdomain}: {resp.status_code}  {resp.text}')
+        return resp.status_code, resp.json()
+    except Exception as e:
+        print(e)
+        return 400, {}
+
+
+"""
     Function: Call IAPI service to create new subdomain
     @params: 
     @return: True or False

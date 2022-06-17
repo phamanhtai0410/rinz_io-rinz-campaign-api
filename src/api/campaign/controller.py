@@ -117,7 +117,7 @@ def delete_campaign(wallet, body, *args, **kwargs):
 
 @lib.handle_res(param_schema=GetCampaignDetailsByIdParams, res_schema=SingleCampaign, login=False)
 def get_campaign_details(subdomain, params, *args, **kwargs):
-    if subdomain:
+    if not params.campaign_id:
         _details = CampaignService.get_campaign_details_by_subdomain(subdomain)
     else:
         _details = CampaignService.get_campaign_details_by_id(params.campaign_id)
