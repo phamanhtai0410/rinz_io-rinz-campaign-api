@@ -166,7 +166,43 @@ class CampaignService(object):
             page=page,
             page_size=page_size
         )
-        return _total, page, _campaigns
+
+        _beautify_campaigns = []
+        for _campaign in _campaigns:
+            if not _campaign["is_released"]:
+                _beautify_campaigns.append(_campaign)
+                next(_campaigns)
+
+            _supplies = SupplyNFTModel.get_list(
+                filter={
+                    "contract": _campaign["contract"]
+                }
+            )
+
+            _current_sells = [{
+                "index_type": _s["type"],
+                "current_sell": _s["total_supply"]
+            } for _s in _supplies]
+
+            if not _current_sells:
+                _beautify_campaigns.append(_campaign)
+                next(_campaigns)
+
+            _nft_list = []
+            for x in _campaign["nft_list"]:
+                is_match = False
+                for y in _current_sells:
+                    if x['index_type'] == y['index_type']:
+                        is_match = True
+                        _nft_list.append({**x, **y})
+                if not is_match:
+                    _nft_list.append({**x, "current_sell": 0})
+
+            _campaign["nft_list"] = _nft_list
+            _campaign["current_sell"] = sum([_c["current_sell"] for _c in _nft_list])
+            _beautify_campaigns.append(_campaign)
+
+        return _total, page, _beautify_campaigns
 
     @classmethod
     def release_campaign(cls, campaign_id, user_id):
