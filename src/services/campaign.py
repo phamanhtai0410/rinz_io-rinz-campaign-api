@@ -101,8 +101,10 @@ class CampaignService(object):
             _sum_supply = sum([nft['supply'] for nft in _list_nft])
             _sum_raise = sum([nft['supply'] * nft['price'] for nft in _list_nft])
             print('sum raise = ', _sum_raise)
+
             if _sum_supply != edit_infos['total_supply']:
                 raise ExCampaign('Invalid Nft List: total supply not valid !')
+
             if _sum_raise != edit_infos["total_raise"]:
                 raise ExCampaign('Invalid Nft List: total raise not valid !')
 
