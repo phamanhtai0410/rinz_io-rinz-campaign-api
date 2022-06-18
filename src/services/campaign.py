@@ -224,7 +224,7 @@ class CampaignService(object):
         if _campaign["user"] != user_id:
             raise ExCampaign("Not have permissions to delete this campaign !")
 
-        delete_subdomain(subdomain=campaign_id["website_domain"])
+        delete_subdomain(subdomain=_campaign["website_domain"])
 
         CampaignModel.update_one(
             filter={
