@@ -171,7 +171,7 @@ class CampaignService(object):
         for _campaign in _campaigns:
             if not _campaign["is_released"]:
                 _beautify_campaigns.append(_campaign)
-                next(_campaigns)
+                continue
 
             _supplies = SupplyNFTModel.get_list(
                 filter={
@@ -186,7 +186,7 @@ class CampaignService(object):
 
             if not _current_sells:
                 _beautify_campaigns.append(_campaign)
-                # next(_campaigns)
+                continue
 
             _nft_list = []
             for x in _campaign["nft_list"]:
