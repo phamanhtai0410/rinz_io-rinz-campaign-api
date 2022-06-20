@@ -285,6 +285,18 @@ class CampaignService(object):
             "deleted": False
         })
 
+        if _campaign:
+            _user = UserModel.get_item(oid=_campaign["user"])
+            del _campaign["user"]
+            _campaign = {
+                **_campaign,
+                "user_infos": {
+                    "username": _user["username"],
+                    "avatar": _user["avatar"],
+                    "public_address": _user["public_address"]
+                }
+            }
+
         if _campaign["is_released"]:
             _supplies = SupplyNFTModel.get_list(
                 filter={
