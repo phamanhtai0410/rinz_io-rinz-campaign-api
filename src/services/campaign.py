@@ -186,7 +186,7 @@ class CampaignService(object):
 
             if not _current_sells:
                 _beautify_campaigns.append(_campaign)
-                next(_campaigns)
+                # next(_campaigns)
 
             _nft_list = []
             for x in _campaign["nft_list"]:
@@ -200,6 +200,7 @@ class CampaignService(object):
 
             _campaign["nft_list"] = _nft_list
             _campaign["current_sell"] = sum([_c["current_sell"] for _c in _nft_list])
+
             _beautify_campaigns.append(_campaign)
 
         return _total, page, _beautify_campaigns
