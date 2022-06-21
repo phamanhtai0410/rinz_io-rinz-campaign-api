@@ -285,6 +285,9 @@ class CampaignService(object):
             "deleted": False
         })
 
+        if not _campaign:
+            raise ExCampaign("Invalid campaign with this subdomain !")
+
         if _campaign:
             _user = UserModel.get_item(oid=_campaign["user"])
             del _campaign["user"]
@@ -345,6 +348,38 @@ class CampaignService(object):
                     "public_address": _user["public_address"]
                 }
             }
+
+        if _campaign["is_released"]:
+            _supplies = SupplyNFTModel.get_list(
+                filter={
+                    "contract": _campaign["contract"]
+                }
+            )
+
+            _current_sells = [{
+                "index_type": _s["type"],
+                "current_sell": _s["total_supply"]
+            } for _s in _supplies]
+
+            if not _current_sells:
+                return _campaign
+
+            _nft_list = []
+            for x in _campaign["nft_list"]:
+                is_match = False
+                for y in _current_sells:
+                    if x['index_type'] == y['index_type']:
+                        is_match = True
+                        _nft_list.append({**x, **y})
+                if not is_match:
+                    _nft_list.append({**x, "current_sell": 0})
+
+            _campaign["nft_list"] = _nft_list
+
+            print('nft_list : ', [_c["current_sell"] or 0 for _c in _campaign["nft_list"]])
+
+            _campaign["current_sell"] = sum([_c["current_sell"] for _c in _nft_list])
+
         return _campaign
 
     @classmethod
