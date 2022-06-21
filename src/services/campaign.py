@@ -94,7 +94,8 @@ class CampaignService(object):
             raise ExCampaign("This campaign's already been deleted !")
 
         if edit_infos["random_nft"]:
-            _sum_percent = sum([nft['percent'] for nft in _list_nft])
+
+            _sum_percent = sum([nft['percent'] if 'percent' in nft else 0 for nft in _list_nft])
             if _sum_percent != 100:
                 raise ExCampaign('Invalid Nft List: total percent not valid !')
         else:
