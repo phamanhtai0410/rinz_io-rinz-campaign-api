@@ -88,7 +88,7 @@ class CampaignService(object):
 
         _campaign = CampaignModel.get_item(oid=campaign_id)
         # if 'nft_list' in edit_infos:
-        _list_nft = edit_infos['nft_list']
+        _list_nft = edit_infos['nft_list'] if 'nft_list' in edit_infos else ''
 
         if _campaign["deleted"]:
             raise ExCampaign("This campaign's already been deleted !")
