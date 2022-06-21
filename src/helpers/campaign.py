@@ -123,7 +123,7 @@ def is_valid_number(_number) -> bool:
 
 def is_valid_subdomain(_subdomain: str) -> bool:
     print("subdomain check = ", _subdomain)
-    pattern = "/^([a-z0-9]+(?:[._-][a-z0-9]+)*)$/"
+    pattern = "^([a-z0-9]+(?:[._-][a-z0-9]+)*)$"
     if not bool(re.match(pattern, _subdomain)):
         raise ValidationError("Invalid subdomain !")
     return True
