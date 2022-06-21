@@ -338,6 +338,9 @@ class CampaignService(object):
     def get_campaign_details_by_id(cls, campaign_id):
         _campaign = CampaignModel.get_item(oid=campaign_id)
 
+        if not _campaign:
+            raise ExCampaign("Invalid campaign ID !")
+
         if _campaign:
             _user = UserModel.get_item(oid=_campaign["user"])
             del _campaign["user"]
