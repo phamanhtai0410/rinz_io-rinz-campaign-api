@@ -82,10 +82,12 @@ def edit_released_campaign(wallet, body, *args, **kwargs):
 
 
 @lib.handle_res(param_schema=GetListCampaignParams, res_schema=GetListCampaignsResp)
-def list_campaigns(wallet, *args, **kwargs):
+def list_campaigns(wallet, params, *args, **kwargs):
 
     _user_id = wallet.user
-    _total, _page, _campaigns = CampaignService.get_list_campaigns(_user_id)
+    page = params.page
+    page_size = params.page_size
+    _total, _page, _campaigns = CampaignService.get_list_campaigns(_user_id=_user_id, page_size=page_size, page=page)
 
     return {
         "total": _total,
