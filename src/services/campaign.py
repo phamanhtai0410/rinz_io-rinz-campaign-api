@@ -87,7 +87,9 @@ class CampaignService(object):
     def edit_non_release_campaign(cls, user_id, campaign_id, edit_infos):
 
         _campaign = CampaignModel.get_item(oid=campaign_id)
-        # if 'nft_list' in edit_infos:
+        if not _campaign:
+            raise ExCampaign("Invalid campaign ID !")
+
         _list_nft = edit_infos['nft_list'] if 'nft_list' in edit_infos else ''
 
         if _campaign["deleted"]:
