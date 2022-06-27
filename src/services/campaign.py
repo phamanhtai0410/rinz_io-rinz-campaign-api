@@ -135,6 +135,9 @@ class CampaignService(object):
 
         _campaign = CampaignModel.get_item(oid=campaign_id)
 
+        if not _campaign:
+            raise ExCampaign("Invalid campaign ID !")
+
         if _campaign['user'] != user_id:
             raise ExCampaign("Not have permission to update this campaign !")
 
