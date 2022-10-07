@@ -2,8 +2,8 @@ variables:
   REGION: asia-southeast1
   IMAGE_NAME: rinz-campaign-api
   IMAGE_NAME_WORKER: rinz-campaign-api-worker
-  CONTAINER_REPO_ASIA_STAG: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-staging-ecr/campaign-api
-  CONTAINER_REPO_ASIA_PROD: 420811272222.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-production-ecr/campaign-api
+  CONTAINER_REPO_ASIA_STAG: 968557029040.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-staging-ecr/campaign-api
+  CONTAINER_REPO_ASIA_PROD: 968557029040.dkr.ecr.ap-southeast-1.amazonaws.com/rinz-production-ecr/campaign-api
   NAMESPACE_STAG: api-stag
   NAMESPACE_PROD: rinz-api
   FULLREPO_ASIA_STAG: $CONTAINER_REPO_ASIA_STAG:$CI_COMMIT_SHORT_SHA
@@ -12,7 +12,7 @@ variables:
   ENV_PRODUCTION: $ENV_PRODUCTION
 
   HELM_VALUE: ${CI_COMMIT_REF_NAME}
-  HELM_VERSION: 2.4.6
+  HELM_VERSION: 3.0.0
   AWS_REGION: ap-southeast-1
   GITLAB_TOKEN: $GITLAB_RUNNER_TOKEN
   DOCKER_DRIVER: overlay
@@ -39,13 +39,13 @@ stages:
   pip3 install --upgrade pip 
   pip3 install --no-cache-dir awscli==1.19.112
   helm plugin install https://github.com/hypnoglow/helm-s3.git
-  helm repo add helm-template s3://rinz-helm-template
-  helm pull s3://rinz-helm-template/helm-template-$HELM_VERSION.tgz --untar=true
+  helm repo add helm-template s3://esol-helm-template
+  helm pull s3://esol-helm-template/helm-template-$HELM_VERSION.tgz --untar=true
 
 build_stag:
   image: docker:19.03.1
   tags:
-  - rinz-stag
+  - esol-stag
   stage: build
   services:
   - docker:19.03.1-dind
@@ -79,7 +79,7 @@ deploy_stag:
   stage: deploy
   image:  alpine/helm:3.2.1
   tags:
-  - rinz-stag
+  - esol-stag
   script:
     - *predeploy
     - *kubectl_config
@@ -102,7 +102,7 @@ deploy_worker_stag:
   stage: deploy
   image:  alpine/helm:3.2.1
   tags:
-  - rinz-stag
+  - esol-stag
   script:
     - *predeploy
     - *kubectl_config
