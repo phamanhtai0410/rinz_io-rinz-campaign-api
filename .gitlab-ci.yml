@@ -32,7 +32,7 @@ stages:
       fi
   - |
       if [ "$CI_COMMIT_REF_NAME" == "stag" ]; then
-        aws eks --region $AWS_REGION update-kubeconfig --name rinz-staging-cluster
+        aws eks --region $AWS_REGION update-kubeconfig --name esol-staging-cluster
       fi
 .predeploy: &predeploy |
   apk add --no-cache  bash git  python3 py3-pip curl
