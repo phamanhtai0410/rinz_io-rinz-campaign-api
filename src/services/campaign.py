@@ -353,9 +353,9 @@ class CampaignService(object):
             _campaign = {
                 **_campaign,
                 "user_infos": {
-                    "username": _user["username"],
-                    "avatar": _user["avatar"],
-                    "public_address": _user["public_address"]
+                    "username": get(_user, "username"),
+                    "avatar": get(_user, "avatar"),
+                    "public_address": get(_user, "public_address")
                 }
             }
 
