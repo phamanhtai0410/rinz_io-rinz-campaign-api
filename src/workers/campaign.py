@@ -35,7 +35,7 @@ def create_domain(subdomain: str, campaign_id: str):
 
     except Exception as e:
         print(e)
-        return False
+        return False, "500"
 
 
 @worker.task(name="worker.create_campaign_smc", rate_limit="1000/s")

@@ -234,25 +234,25 @@ class CampaignService(object):
         )
         print("*** Subdomain Creation Result : ", _creation_result)
 
-        if _creation_result:
-            #       Call to CampaignFactory to deploy new campaign contract
-            #       params: infors of campaigns
-            #       return: created campaign contract's address
-            print('_campaign_dict : ', _campaign, type(_campaign))
-            print('_campaign_id : ', campaign_id, type(campaign_id))
+        # if _creation_result:
+        #       Call to CampaignFactory to deploy new campaign contract
+        #       params: infors of campaigns
+        #       return: created campaign contract's address
+        print('_campaign_dict : ', _campaign, type(_campaign))
+        print('_campaign_id : ', campaign_id, type(campaign_id))
 
-            for _key, _value in _campaign.items():
-                if isinstance(_value, ObjectId):
-                    _campaign[_key] = str(_value)
-                if isinstance(_value, datetime):
-                    _campaign[_key] = _value.replace(tzinfo=timezone.utc).timestamp()
+        for _key, _value in _campaign.items():
+            if isinstance(_value, ObjectId):
+                _campaign[_key] = str(_value)
+            if isinstance(_value, datetime):
+                _campaign[_key] = _value.replace(tzinfo=timezone.utc).timestamp()
 
-            print('_campaign_dict after encode: ', _campaign, type(_campaign))
+        print('_campaign_dict after encode: ', _campaign, type(_campaign))
 
-            campaign_worker.create_campaign_smc.delay(
-                _campaign_dict=dict(_campaign),
-                _campaign_id=campaign_id
-            )
+        campaign_worker.create_campaign_smc.delay(
+            _campaign_dict=dict(_campaign),
+            _campaign_id=campaign_id
+        )
 
         return campaign_id, _creation_result, _msg
 
